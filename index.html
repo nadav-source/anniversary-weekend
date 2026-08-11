@@ -101,6 +101,14 @@ h1 .yr{display:block; font-family:var(--display); font-style:italic; font-weight
 .fill{height:100%; width:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent),var(--rust));
   transform:scaleX(0); transform-origin:right center; transition:transform .5s var(--ease)}
 .pct{font-size:12px; font-weight:700; color:var(--rust); min-width:52px; text-align:left; font-variant-numeric:tabular-nums}
+/* sync lamp: grey idle, amber working, green clean, red offline. Tappable
+   to force a sync and explain itself, since a dot alone can't. */
+.sync{flex:none; width:11px; height:11px; padding:0; border:0; border-radius:50%;
+  background:var(--rule); cursor:pointer; transition:background .3s var(--ease)}
+.sync[data-s="ok"]{background:#5c8f63}
+.sync[data-s="busy"]{background:var(--accent); animation:pulse 1.2s ease-in-out infinite}
+.sync[data-s="off"]{background:var(--todo)}
+@keyframes pulse{50%{opacity:.3}}
 .chips{display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px}
 .chips::-webkit-scrollbar{display:none}
 .chip{
@@ -235,6 +243,23 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
 .toast.show{opacity:1; transform:translate(-50%,0)}
 .toast button{font:inherit; font-size:13px; font-weight:700; color:var(--accent);
   background:none; border:0; cursor:pointer; margin-right:12px; padding:0}
+/* ── opening film ──────────────────────────────────────────────────── */
+.intro{
+  position:fixed; inset:0; z-index:90; display:grid; place-items:center;
+  background:#0e0a07; cursor:pointer; transition:opacity .5s var(--ease);
+}
+.intro[hidden]{display:none}
+.intro.hide{opacity:0; pointer-events:none}
+.intro video{width:auto; height:100%; max-width:100%; max-height:100%; object-fit:contain; display:block}
+.intro .skip{
+  position:absolute; left:0; right:0; text-align:center;
+  bottom:calc(env(safe-area-inset-bottom, 0px) + 24px);
+  font-size:12.5px; letter-spacing:.12em; color:rgba(245,237,224,.55);
+  opacity:0; transition:opacity .6s var(--ease); pointer-events:none;
+}
+.intro.ready .skip{opacity:1}
+h1{cursor:pointer}
+
 .stamp{
   position:fixed; inset:0; z-index:70; display:none; place-items:center;
   background:rgba(245,237,224,.9); backdrop-filter:blur(3px);
@@ -256,7 +281,7 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
 
 /* ── print ─────────────────────────────────────────────────────────── */
 @media print{
-  body::before,.bar,.acts,.add,.toast,.stamp,.countdown,.sec-caret{display:none!important}
+  body::before,.bar,.acts,.add,.toast,.stamp,.intro,.countdown,.sec-caret,.rowbtn,.sync{display:none!important}
   body{background:#fff}
   .wrap{max-width:none; padding:0}
   section.closed .list{display:block!important}
@@ -297,6 +322,7 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
   <div class="meter">
     <div class="track"><div class="fill" id="fill"></div></div>
     <div class="pct" id="pct">0 / 0</div>
+    <button class="sync" id="sync" data-s="busy" aria-label="מצב סנכרון"></button>
   </div>
   <div class="chips" id="chips">
     <button class="chip" data-f="all" aria-pressed="true">הכל</button>
@@ -316,17 +342,19 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
 </div>
 
 <div class="acts">
-  <button class="btn" id="share">לשלוח את ההתקדמות</button>
+  <button class="btn" id="share">לשלוח את הקישור</button>
+  <button class="btn ghost" id="backup">עותק גיבוי</button>
   <button class="btn ghost" id="print">להדפיס</button>
   <button class="btn ghost" id="reset">לאפס הכל</button>
 </div>
 
 <footer>
-  נשמר לבד על המכשיר הזה. הכפתור למעלה שולח קישור עם כל מה שכבר סומן.<br>
+  הרשימה מסתנכרנת בין המכשירים לבד. אותו קישור, תמיד.<br>
   <span class="sig">🖤 &nbsp;🤍</span>
 </footer>
 </div>
 
+<div class="intro" id="intro" hidden></div>
 <div class="toast" id="toast"></div>
 <div class="stamp" id="stamp"><div><b>מוכנים לצאת</b><span>ALL PACKED</span></div></div>
 
@@ -534,8 +562,11 @@ const SECTIONS=[
 /* ══ state ═════════════════════════════════════════════════════════════ */
 const KEY='tzimmer-2026-08', A='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const FLAT=[]; SECTIONS.forEach((s,si)=>s.items.forEach((it,ii)=>{it.id='s'+si+'i'+ii; it.si=si; FLAT.push(it)}));
-let st={c:{},o:{},del:{},edit:{},custom:[],notes:'',folded:{}};
+let st={c:{},o:{},del:{},edit:{},custom:[],notes:'',folded:{},ts:{}};
 let filter='all', hideDone=false, wasFull=null;
+/* st.ts holds one timestamp per item id (plus '#notes'), which is how two
+   phones merge without clobbering: newest write per row wins, not per doc. */
+const stamp=id=>{ st.ts[id]=Date.now(); };
 
 const $=q=>document.querySelector(q), app=$('#app');
 const live=()=>FLAT.concat(st.custom).filter(i=>!st.del[i.id]);
@@ -543,7 +574,124 @@ const allItems=live;
 const secItems=si=>live().filter(i=>i.si===si);
 
 function load(){ try{ const r=localStorage.getItem(KEY); if(r) st=Object.assign(st,JSON.parse(r)); }catch(e){} }
-function save(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+
+/* Edits made before sync existed carry no timestamps. Give them one now, or
+   they'd read as older than everything and never reach the other phone. */
+function migrate(){
+  st.ts=st.ts||{};
+  if(Object.keys(st.ts).length) return;
+  const t=Date.now();
+  const ids=[].concat(Object.keys(st.c||{}),Object.keys(st.o||{}),
+    Object.keys(st.del||{}),Object.keys(st.edit||{}),(st.custom||[]).map(c=>c.id));
+  ids.forEach(id=>{ st.ts[id]=t; });
+  if(st.notes) st.ts['#notes']=t;
+}
+function save(){
+  try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){}
+  if(!applying){ dirty=true; queuePush(); }   // local edit -> schedule a push
+}
+
+/* ══ shared state ══════════════════════════════════════════════════════
+   One anonymous JSON blob, no account and no key. Anyone who reads this
+   page's source can therefore also overwrite the list — that is the deal
+   we took for zero setup. "עותק גיבוי" produces a restore link. */
+const BLOB='https://jsonblob.com/api/jsonBlob/019ff0fe-9882-7ccc-a615-323981968429';
+let applying=false, syncing=false, pushTimer=null, warnedOffline=false;
+/* dirty = this device holds writes the blob has not accepted yet. It stays
+   set through a failed push so the next poll retries instead of dropping it. */
+let dirty=false, backoffUntil=0;
+
+function setLamp(s,label){
+  const el=$('#sync'); if(!el) return;
+  el.dataset.s=s; el.setAttribute('aria-label','מצב סנכרון: '+label); el.title=label;
+}
+
+/* Only rows that carry state travel. Rows that were touched and then
+   reverted still need a record, or the revert never reaches the other phone. */
+function toDoc(){
+  const items={}, at=id=>items[id]||(items[id]={ts:st.ts[id]||0});
+  Object.keys(st.ts).forEach(id=>{ if(id!=='#notes') at(id); });
+  Object.keys(st.c).forEach(id=>at(id).c=1);
+  Object.keys(st.o).forEach(id=>at(id).o=st.o[id]);
+  Object.keys(st.del).forEach(id=>at(id).d=1);
+  Object.keys(st.edit).forEach(id=>at(id).e=st.edit[id]);
+  return {v:2,items:items,custom:st.custom,notes:{v:st.notes,ts:st.ts['#notes']||0}};
+}
+
+function mergeDoc(doc){
+  if(!doc||typeof doc!=='object'||!doc.items) return false;
+  let changed=false;
+  Object.keys(doc.items).forEach(id=>{
+    const r=doc.items[id]||{}, rts=r.ts||0, lts=st.ts[id];
+    if(lts!==undefined&&rts<=lts) return;           // ours is newer, keep it
+                                                    // no local ts at all -> adopt
+    changed=true; st.ts[id]=rts;
+    if(r.c) st.c[id]=1; else delete st.c[id];
+    if(r.o!==undefined) st.o[id]=r.o; else delete st.o[id];
+    if(r.d) st.del[id]=1; else delete st.del[id];
+    if(r.e!==undefined) st.edit[id]=r.e; else delete st.edit[id];
+  });
+  (doc.custom||[]).forEach(rc=>{
+    if(rc&&rc.id&&!st.custom.some(c=>c.id===rc.id)){ st.custom.push(rc); changed=true; }
+  });
+  const rn=doc.notes||{};
+  if((rn.ts||0)>(st.ts['#notes']||0)){ st.notes=rn.v||''; st.ts['#notes']=rn.ts; changed=true; }
+  return changed;
+}
+
+/* The host answers "rate limit exceeded" as a normal 200 with an error body.
+   Taken at face value that reads as a successful write, and a pending edit
+   would be dropped — so treat any body carrying .error as a failure. */
+function guard(j,what){
+  if(j&&j.error){
+    const err=new Error(what+': '+j.error);
+    err.rate=j.code==='rate_limit'; err.retry=j.retryAfterSeconds||60;
+    throw err;
+  }
+  return j;
+}
+
+async function sync(force){
+  if(syncing) return;
+  if(Date.now()<backoffUntil){                 // defer, never drop
+    clearTimeout(pushTimer);
+    pushTimer=setTimeout(()=>sync(force),backoffUntil-Date.now()+250);
+    return;
+  }
+  syncing=true; setLamp('busy','מסנכרן');
+  try{
+    const res=await fetch(BLOB,{cache:'no-store'});
+    if(!res.ok) throw new Error('GET '+res.status);
+    const remote=guard(await res.json(),'GET');
+    const changed=mergeDoc(remote);
+    if(changed){
+      applying=true; save(); notes.value=st.notes||''; render(); applying=false;
+    }
+    if(force||changed||dirty||remote.seeded===false){
+      const put=await fetch(BLOB,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(toDoc())});
+      if(!put.ok) throw new Error('PUT '+put.status);
+      guard(await put.json().catch(()=>null),'PUT');
+      dirty=false;                             // only after a confirmed write
+    }
+    setLamp('ok','מסונכרן'); warnedOffline=false; backoffUntil=0;
+  }catch(e){
+    if(e&&e.rate){
+      backoffUntil=Date.now()+e.retry*1000;
+      setLamp('busy','השרת עמוס — ננסה שוב עוד רגע');
+      clearTimeout(pushTimer);
+      pushTimer=setTimeout(()=>sync(force),e.retry*1000+250);
+    }else{
+      setLamp('off','לא מחובר — נשמר על המכשיר');
+      if(!warnedOffline){ warnedOffline=true; toast('אין חיבור — נשמר מקומית ויסונכרן אחר כך'); }
+    }
+  }finally{ syncing=false; }
+}
+
+function queuePush(){
+  setLamp('busy','מסנכרן');
+  clearTimeout(pushTimer);
+  pushTimer=setTimeout(()=>sync(true),1500);
+}
 
 const b64e=s=>{const b=new TextEncoder().encode(s);let x='';b.forEach(c=>x+=String.fromCharCode(c));return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder().decode(u)};
@@ -616,7 +764,7 @@ function startEdit(li,id){
   const finish=commit=>{
     if(closed) return; closed=true;
     if(commit){ const v=inp.value.trim();
-      if(v){ if(v!==item.t) st.edit[id]=v; else delete st.edit[id]; save(); } }
+      if(v){ if(v!==item.t) st.edit[id]=v; else delete st.edit[id]; stamp(id); save(); } }
     render();
   };
   inp.addEventListener('keydown',ev=>{
@@ -672,18 +820,18 @@ app.addEventListener('click',e=>{
     const id=li.dataset.id;
     if(e.target.closest('.edit')){ startEdit(li,id); return; }
     if(e.target.closest('.del')){
-      st.del[id]=1; save(); render();
-      toast('הפריט נמחק',()=>{ delete st.del[id]; save(); render(); });
+      st.del[id]=1; stamp(id); save(); render();
+      toast('הפריט נמחק',()=>{ delete st.del[id]; stamp(id); save(); render(); });
       return; }
     const w=e.target.closest('.who');
     if(w){ // cycle from what is on screen, and repaint just this pill
       const v=((+w.dataset.o||0)+1)%3;
       if(v===defOwn(id)) delete st.o[id]; else st.o[id]=v;
-      w.dataset.o=v; w.textContent=OWN[v]||'··'; w.title=OWNT[v];
+      stamp(id); w.dataset.o=v; w.textContent=OWN[v]||'··'; w.title=OWNT[v];
       w.setAttribute('aria-label','אחראי: '+OWNT[v]); save(); return; }
     if(e.target.closest('.box')||e.target.closest('.body')){
       if(st.c[id]) delete st.c[id]; else st.c[id]=1;
-      save();
+      stamp(id); save();
       if(hideDone||filter!=='all') render(); else {
         li.classList.toggle('on',!!st.c[id]);
         li.querySelector('.box').setAttribute('aria-pressed',st.c[id]?'true':'false');
@@ -707,7 +855,9 @@ app.addEventListener('keydown',e=>{
 function addItem(input){
   const t=input.value.trim(); if(!t) return;
   const si=+input.dataset.s;
-  st.custom.push({id:'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:t,k:SECTIONS[si].items[0].k,si:si,cu:1});
+  const nid='x'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  st.custom.push({id:nid,t:t,k:SECTIONS[si].items[0].k,si:si,cu:1,ts:Date.now()});
+  stamp(nid);
   input.value=''; save(); render();
   const secs=app.querySelectorAll('section'); for(const s of secs){ if(s.dataset.s===SECTIONS[si].id){ const i=s.querySelector('.add input'); if(i) i.focus(); } }
 }
@@ -726,7 +876,7 @@ $('#chips').addEventListener('click',e=>{
 });
 
 const notes=$('#notes');
-notes.addEventListener('input',()=>{ st.notes=notes.value; save(); });
+notes.addEventListener('input',()=>{ st.notes=notes.value; stamp('#notes'); save(); });
 
 function toast(msg,undo){
   const t=$('#toast'); t.innerHTML=esc(msg)+(undo?'<button type="button">ביטול</button>':'');
@@ -735,20 +885,90 @@ function toast(msg,undo){
   clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),undo?9000:2600);
 }
 
-$('#share').addEventListener('click',async()=>{
-  const url=encode();
-  const txt='הרשימה לצימר — ההתקדמות שלי עד עכשיו';
+async function offer(url,text,okMsg){
   try{
-    if(navigator.share){ await navigator.share({title:'סופ״ש של שנה',text:txt,url:url}); return; }
-    await navigator.clipboard.writeText(url); toast('הקישור הועתק — אפשר לשלוח');
+    if(navigator.share){ await navigator.share({title:'סופ״ש של שנה',text:text,url:url}); return; }
+    await navigator.clipboard.writeText(url); toast(okMsg);
   }catch(e){ if(e&&e.name==='AbortError') return; prompt('להעתיק את הקישור:',url); }
+}
+// the plain link — state rides in the shared blob, not in the URL
+$('#share').addEventListener('click',()=>offer(
+  location.origin+location.pathname,'הרשימה שלנו לסופ״ש','הקישור הועתק'));
+// a frozen snapshot, in case the shared copy is ever lost or overwritten
+$('#backup').addEventListener('click',()=>offer(
+  encode(),'עותק גיבוי של הרשימה','קישור הגיבוי הועתק'));
+$('#sync').addEventListener('click',()=>{
+  toast($('#sync').title||'מסנכרן'); sync(true);
 });
 $('#print').addEventListener('click',()=>window.print());
 $('#reset').addEventListener('click',()=>{
-  if(!confirm('לאפס הכל? זה מחזיר גם פריטים שמחקתם ושמות ששיניתם.')) return;
-  st={c:{},o:{},del:{},edit:{},custom:[],notes:'',folded:{}}; save(); notes.value=''; render();
+  if(!confirm('לאפס הכל? זה מאפס גם אצל מי שחולק איתכם את הרשימה.')) return;
+  // keep timestamps, freshly bumped, so the reset propagates instead of
+  // looking like an empty device that should adopt the other side's state
+  const t=Date.now(), ts={};
+  Object.keys(st.ts).forEach(id=>{ ts[id]=t; });
+  [].concat(Object.keys(st.c),Object.keys(st.o),Object.keys(st.del),
+    Object.keys(st.edit),st.custom.map(c=>c.id)).forEach(id=>{ ts[id]=t; });
+  ts['#notes']=t;
+  st={c:{},o:{},del:{},edit:{},custom:[],notes:'',folded:{},ts:ts};
+  save(); notes.value=''; render();
 });
 $('#stamp').addEventListener('click',()=>$('#stamp').classList.remove('show'));
+
+/* ══ opening film ══════════════════════════════════════════════════════
+   Silent by construction: muted, no controls, nothing that can unmute it.
+   Built in JS rather than markup so the 2.5MB is not fetched on the loads
+   where it will not play — this list gets opened in supermarket aisles.
+   Every exit path routes to close(), including errors and a hard timeout,
+   so the film can never trap anyone in front of the list. */
+const INTRO_KEY='tzimmer-intro-seen';
+function playIntro(force){
+  const box=$('#intro');
+  if(!box||(!force&&localStorage.getItem(INTRO_KEY))) return;
+  if(box.dataset.on==='1') return;
+  box.dataset.on='1';
+
+  const v=document.createElement('video');
+  v.muted=true; v.defaultMuted=true; v.autoplay=true; v.playsInline=true;
+  v.setAttribute('muted',''); v.setAttribute('playsinline','');
+  v.preload='auto'; v.disablePictureInPicture=true; v.src='intro.mp4';
+  const skip=document.createElement('div');
+  skip.className='skip'; skip.textContent='להמשיך לרשימה ←';
+  box.appendChild(v); box.appendChild(skip);
+  box.hidden=false;
+  const prevOverflow=document.body.style.overflow;
+  document.body.style.overflow='hidden';
+
+  let closed=false;
+  /* markSeen=false when we bailed rather than showed it — a stale cached
+     service worker can break playback on exactly one load, and burning the
+     "already seen" flag there would mean she never gets the film at all. */
+  const close=markSeen=>{
+    if(closed) return; closed=true;
+    clearTimeout(bail);
+    try{ v.pause(); }catch(e){}
+    box.classList.add('hide');
+    setTimeout(()=>{
+      box.hidden=true; box.innerHTML='';
+      box.classList.remove('hide','ready'); box.dataset.on='0';
+      document.body.style.overflow=prevOverflow;
+    },520);
+    if(markSeen!==false){ try{ localStorage.setItem(INTRO_KEY,'1'); }catch(e){} }
+  };
+  const bail=setTimeout(()=>close(false),25000);
+  v.addEventListener('ended',()=>close(true));
+  v.addEventListener('error',()=>close(false));
+  v.addEventListener('playing',()=>box.classList.add('ready'));
+  box.addEventListener('click',()=>close(true));
+  document.addEventListener('keydown',function esc(e){
+    if(e.key==='Escape'){ document.removeEventListener('keydown',esc); close(true); }
+  });
+  // muted autoplay is permitted everywhere, but if it is ever refused,
+  // surface the hint immediately so a tap still gets them through
+  const p=v.play();
+  if(p&&p.catch) p.catch(()=>box.classList.add('ready'));
+}
+$('h1').addEventListener('click',()=>playIntro(true));   // tap the title to replay
 
 /* countdown — whole calendar days, so it flips at midnight and not at 15:00 */
 (function(){
@@ -763,16 +983,29 @@ $('#stamp').addEventListener('click',()=>$('#stamp').classList.remove('show'));
 
 /* ══ boot ══════════════════════════════════════════════════════════════ */
 load();
+migrate();
 if(location.hash.length>3){
   const before=JSON.parse(JSON.stringify(st));
   if(decode(location.hash)){
-    save();
+    // a restore link outranks whatever is shared right now
+    const t=Date.now(); st.ts={};
+    [].concat(Object.keys(st.c),Object.keys(st.o),Object.keys(st.del),
+      Object.keys(st.edit),st.custom.map(c=>c.id)).forEach(id=>{ st.ts[id]=t; });
+    st.ts['#notes']=t;
+    applying=true; save(); applying=false;
     history.replaceState(null,'',location.pathname);
-    setTimeout(()=>toast('נטענה ההתקדמות מהקישור',()=>{ st=before; save(); notes.value=st.notes||''; render(); }),400);
+    setTimeout(()=>toast('שוחזר מקישור גיבוי',()=>{ st=before; save(); notes.value=st.notes||''; render(); }),400);
   }
 }
 notes.value=st.notes||'';
 render();
+playIntro(false);
+
+/* publish whatever this device holds, then keep both phones converging */
+sync(true);
+setInterval(()=>{ if(!document.hidden) sync(false); },25000);
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden) sync(false); });
+addEventListener('online',()=>sync(true));
 
 if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script>

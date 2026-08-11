@@ -16,11 +16,40 @@ Hebrew, RTL, mobile-first, and usable with no signal.
   both → נדב → טוני. Clothes sections come pre-assigned.
 - **Add, rename, or delete any row**, built-in ones included. Deleting shows an
   undo; *לאפס הכל* restores everything.
-- **Progress is saved per device**, and *לשלוח את ההתקדמות* encodes the whole
-  state — ticks, owners, renames, deletions, added items and notes — into a
-  link. Send it and the other phone picks up exactly where you left off.
-- **Works offline.** Fonts are bundled and a service worker caches the shell.
+- **Shared across devices on one permanent link.** Both phones read and write a
+  single anonymous JSON blob; the dot next to the progress bar is the sync lamp
+  (grey idle, amber working, green clean, red offline) and is tappable to force
+  a sync.
+- **Works offline.** Fonts are bundled, a service worker caches the shell, and
+  localStorage is the local source of truth — edits made with no signal are
+  held and pushed when the connection returns.
+- *עותק גיבוי* still encodes the entire state into a URL, as a restore point.
 - **Prints** to a clean sheet if you'd rather carry paper.
+
+## How syncing works, and what it costs
+
+State lives in one anonymous blob on jsonblob.com — no account, no API key.
+The trade is that **anyone who reads this page's source can also read or
+overwrite the list.** Acceptable for a packing list, not for anything else.
+If it ever gets clobbered, *עותק גיבוי* restores from a link.
+
+Merging is **per row, newest write wins** — not per document — so two phones
+editing different rows never clobber each other. Every row carries a timestamp
+in `st.ts`; `mergeDoc` only adopts a remote row whose timestamp beats the local
+one, and a row with no local timestamp is always adopted.
+
+Two failure modes are handled explicitly, both learned the hard way:
+
+- The host answers **rate limiting as HTTP 200 with an `error` body**. Taken at
+  face value that looks like a successful write, so `guard()` rejects any body
+  carrying `.error`, and `dirty` is cleared only after a confirmed write.
+- A **failed push must not be dropped.** `dirty` stays set through failures and
+  any later sync flushes it; rate limiting sets `backoffUntil`, which defers
+  work rather than discarding it.
+
+Under heavy use sync can lag by up to a minute while backing off. Nothing is
+lost — it just arrives late. Moving to a Cloudflare Worker or Apps Script
+endpoint would remove that ceiling.
 
 ## Structure
 

@@ -1,7 +1,7 @@
 /* Offline shell. The tzimmer may have no signal and this list is needed there.
    HTML is network-first so a redeploy is picked up; fonts/icons are cache-first
    since they never change without a filename change. */
-const CACHE = 'tzimmer-v1';
+const CACHE = 'tzimmer-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.svg'];
 
 self.addEventListener('install', e => {
@@ -19,7 +19,13 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const req = e.request;
-  if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;
+  const url = new URL(req.url);
+  if (req.method !== 'GET' || url.origin !== location.origin) return;
+
+  // Media must go straight to the network. The browser fetches video with a
+  // Range header; cache.put() rejects a 206, and answering a range request
+  // with a cached full response makes playback fail outright.
+  if (req.headers.has('range') || /\.(mp4|webm|m4v|mov)$/i.test(url.pathname)) return;
 
   if (req.mode === 'navigate') {
     e.respondWith(

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>צימר · שנה אחת · 13–15.08</title>
+<meta name="description" content="רשימת הצטיידות לסופ״ש של שנה — 13–15 באוגוסט 2026">
+<!-- the repo has to be public for free GitHub Pages; keep the page out of
+     search results so it is shareable by link but not discoverable. -->
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#f5ede0">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%238b3a2a'/%3E%3Cpath d='M9 16.5l4.6 4.5L23 11' stroke='%23f5ede0' stroke-width='3.2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+
+<style>
+/* ── fonts, bundled locally so the page works with no signal ───────── */
+@font-face{font-family:'Heebo';font-style:normal;font-weight:400;font-display:swap;src:url('./fonts/heebo-hebrew-400-normal.woff2') format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:'Heebo';font-style:normal;font-weight:400;font-display:swap;src:url('./fonts/heebo-latin-400-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:'Heebo';font-style:normal;font-weight:500;font-display:swap;src:url('./fonts/heebo-hebrew-500-normal.woff2') format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:'Heebo';font-style:normal;font-weight:700;font-display:swap;src:url('./fonts/heebo-hebrew-700-normal.woff2') format('woff2');unicode-range:U+0307-0308,U+0590-05FF,U+200C-2010,U+20AA,U+25CC,U+FB1D-FB4F}
+@font-face{font-family:'Heebo';font-style:normal;font-weight:700;font-display:swap;src:url('./fonts/heebo-latin-700-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+2000-206F,U+20AC,U+2122}
+@font-face{font-family:'Playfair Display';font-style:normal;font-weight:600;font-display:swap;src:url('./fonts/playfair-display-latin-600-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:'Playfair Display';font-style:italic;font-weight:600;font-display:swap;src:url('./fonts/playfair-display-latin-600-italic.woff2') format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
+
+/* ── tokens, inherited from the anniversary deck ───────────────────── */
+:root{
+  --paper:#f5ede0; --ink:#1a1209; --rust:#8b3a2a; --accent:#c47b2a;
+  --muted:#8a7e6b; --card:#faf6ef; --border:#e0d5c4; --rule:#cdbfa8;
+  --ink-soft:rgba(26,18,9,.62); --ink-faint:rgba(26,18,9,.34);
+  --her:#b8558f; --him:#4a7fb5; --todo:#b5432a;
+  --display:'Playfair Display',Georgia,serif;
+  --body:'Heebo','Segoe UI','Arial Hebrew',Arial,sans-serif;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --shadow:0 14px 38px rgba(80,50,20,.13);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; font-family:var(--body); font-weight:400; color:var(--ink);
+  background:var(--paper); line-height:1.55; overflow-x:hidden;
+  -webkit-tap-highlight-color:transparent;
+}
+/* paper grain + a faint ruled line, so it reads as a journal not a form */
+body::before{
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:0; opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.35'/%3E%3C/svg%3E");
+  mix-blend-mode:multiply;
+}
+.wrap{position:relative; z-index:1; max-width:760px; margin:0 auto; padding:0 18px 120px}
+
+/* ── header: a luggage tag ─────────────────────────────────────────── */
+header{padding:44px 0 26px; text-align:center; position:relative}
+.eyebrow{
+  font-family:var(--display); font-style:italic; font-size:15px; letter-spacing:.06em;
+  color:var(--accent); margin:0 0 14px;
+}
+.eyebrow::before,.eyebrow::after{content:'—'; opacity:.5; margin:0 10px}
+h1{
+  font-family:var(--body); font-weight:700; font-size:clamp(34px,9vw,54px);
+  margin:0; line-height:1.08; letter-spacing:-.02em;
+}
+h1 .yr{display:block; font-family:var(--display); font-style:italic; font-weight:600;
+  font-size:clamp(15px,3.6vw,21px); color:var(--rust); letter-spacing:.16em; margin-top:12px}
+.dates{
+  margin:20px auto 0; display:inline-flex; align-items:center; gap:14px;
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  padding:9px 20px; font-size:14px; color:var(--ink-soft); letter-spacing:.02em;
+}
+.dates b{font-weight:700; color:var(--ink)}
+.dates .dot{width:4px;height:4px;border-radius:50%;background:var(--accent);flex:none}
+.countdown{margin-top:16px; font-size:13px; color:var(--muted)}
+.countdown b{color:var(--todo); font-weight:700}
+
+/* ── itinerary ─────────────────────────────────────────────────────── */
+.plan{
+  margin:30px 0 8px; background:var(--card); border:1px solid var(--border);
+  border-radius:16px; padding:6px 18px; box-shadow:var(--shadow);
+}
+.plan-row{display:flex; gap:14px; padding:15px 0; border-bottom:1px dashed var(--border)}
+.plan-row:last-child{border-bottom:0}
+.plan-day{
+  flex:none; width:64px; font-family:var(--display); font-weight:600; font-size:22px;
+  color:var(--rust); line-height:1; padding-top:2px;
+}
+.plan-day span{display:block; font-family:var(--body); font-size:11px; font-weight:500;
+  color:var(--muted); letter-spacing:.08em; margin-top:5px}
+.plan-txt{font-size:14.5px; color:var(--ink-soft)}
+.plan-txt b{color:var(--ink); font-weight:500}
+.plan-row.is-anniv .plan-txt b{color:var(--her)}
+
+/* ── sticky control bar ────────────────────────────────────────────── */
+.bar{
+  position:sticky; top:0; z-index:20; margin:26px -18px 0; padding:10px 18px 11px;
+  background:rgba(245,237,224,.93); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+}
+.meter{display:flex; align-items:center; gap:11px; margin-bottom:9px}
+.track{flex:1; height:7px; background:#e6dcc9; border-radius:99px; overflow:hidden}
+/* scaleX rather than width — compositor-only, no layout pass on every tick.
+   Origin is the right edge because the bar fills along the RTL reading flow. */
+.fill{height:100%; width:100%; border-radius:99px; background:linear-gradient(90deg,var(--accent),var(--rust));
+  transform:scaleX(0); transform-origin:right center; transition:transform .5s var(--ease)}
+.pct{font-size:12px; font-weight:700; color:var(--rust); min-width:52px; text-align:left; font-variant-numeric:tabular-nums}
+.chips{display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding-bottom:2px}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  flex:none; font:inherit; font-size:13px; font-weight:500; cursor:pointer;
+  padding:7px 14px; border-radius:99px; border:1px solid var(--border);
+  background:var(--card); color:var(--ink-soft); transition:all .18s var(--ease);
+}
+.chip[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.chip.tgl[aria-pressed="true"]{background:var(--accent); border-color:var(--accent); color:#fff}
+
+/* ── sections ──────────────────────────────────────────────────────── */
+section{margin-top:26px; scroll-margin-top:118px}
+.sec-head{display:flex; align-items:baseline; gap:12px; cursor:pointer; padding:8px 2px; user-select:none}
+.sec-n{
+  font-family:var(--display); font-size:13px; font-weight:600; color:var(--paper);
+  background:var(--rust); width:27px; height:27px; border-radius:50%; flex:none;
+  display:grid; place-items:center; transform:translateY(3px); transition:background .3s
+}
+.sec-t{flex:1; min-width:0}
+.sec-t h2{margin:0; font-size:19px; font-weight:700; letter-spacing:-.01em}
+.sec-t p{margin:3px 0 0; font-size:12.5px; color:var(--muted)}
+.sec-count{font-size:12px; font-weight:700; color:var(--ink-faint); font-variant-numeric:tabular-nums; flex:none}
+.sec-caret{flex:none; color:var(--ink-faint); transition:transform .3s var(--ease); font-size:12px}
+section.closed .sec-caret{transform:rotate(-90deg)}
+section.closed .list{display:none}
+section.done .sec-n{background:var(--accent)}
+section.done .sec-t h2{color:var(--muted)}
+section.hot .sec-n{background:var(--todo); box-shadow:0 0 0 4px rgba(181,67,42,.15)}
+
+.list{list-style:none; margin:6px 0 0; padding:0; background:var(--card);
+  border:1px solid var(--border); border-radius:14px; overflow:hidden}
+
+/* ── item row ──────────────────────────────────────────────────────── */
+.it{display:flex; align-items:flex-start; gap:12px; padding:13px 15px; border-bottom:1px solid var(--border); position:relative}
+.it:last-child{border-bottom:0}
+.box{
+  position:relative; flex:none; width:26px; height:26px; margin-top:0; border-radius:8px; cursor:pointer;
+  border:1.5px solid var(--rule); background:transparent; padding:0;
+  display:grid; place-items:center; transition:all .2s var(--ease);
+}
+/* the visual box stays small; the hit area grows to ~44px for one-handed
+   use in a supermarket aisle. Overlaps the label, which toggles anyway. */
+.box::after{content:''; position:absolute; inset:-9px}
+.box svg{width:14px; height:14px; stroke:var(--paper); stroke-width:3.4; fill:none;
+  stroke-linecap:round; stroke-linejoin:round; stroke-dasharray:22; stroke-dashoffset:22}
+.it.on .box{background:var(--accent); border-color:var(--accent)}
+.it.on .box svg{stroke-dashoffset:0; transition:stroke-dashoffset .3s var(--ease) .04s}
+.it.on .lbl{color:var(--ink-faint); text-decoration:line-through; text-decoration-color:var(--rule)}
+.it.on .note{opacity:.4}
+.body{flex:1; min-width:0; cursor:pointer}
+.lbl{font-size:15.5px; line-height:1.4; transition:color .2s}
+.note{margin:5px 0 0; font-size:12.5px; line-height:1.5; color:var(--ink-soft);
+  border-right:2px solid var(--accent); padding-right:9px; transition:opacity .2s}
+.note.warn{border-right-color:var(--todo)}
+.who{
+  position:relative; flex:none; font:inherit; font-size:11px; font-weight:700; cursor:pointer;
+  width:28px; height:28px; border-radius:50%; margin-top:0; padding:0;
+  border:1px solid var(--border); background:transparent; color:var(--ink-faint);
+  transition:all .2s var(--ease);
+}
+/* full height, but only a little wider — a generous horizontal grab here
+   would swallow taps meant for the label next to it. */
+.who::after{content:''; position:absolute; inset:-8px -4px}
+.who[data-o="1"]{background:var(--him); border-color:var(--him); color:#fff}
+.who[data-o="2"]{background:var(--her); border-color:var(--her); color:#fff}
+.it.custom .lbl::after{content:'·'; color:var(--accent); margin-right:6px; font-weight:700}
+.del{flex:none; border:0; background:none; color:var(--ink-faint); cursor:pointer; font-size:16px; padding:0 2px; display:none}
+.it.custom .del{display:block}
+
+/* menu card inside the dinner section */
+.menu{margin:6px 0 0; padding:16px 18px; background:#fff; border:1px solid var(--border);
+  border-radius:14px 14px 0 0; border-bottom:0}
+.menu h3{margin:0 0 12px; font-family:var(--display); font-style:italic; font-weight:600;
+  font-size:16px; color:var(--rust); letter-spacing:.04em; text-align:center}
+.menu dl{margin:0; display:grid; grid-template-columns:auto 1fr; gap:8px 12px; font-size:13.5px}
+.menu dt{color:var(--muted); font-size:11.5px; font-weight:500; padding-top:3px; letter-spacing:.04em}
+.menu dd{margin:0; color:var(--ink)}
+.menu .alt{margin:13px 0 0; padding-top:11px; border-top:1px dashed var(--border);
+  font-size:12px; color:var(--ink-soft)}
+.menu + .list{border-radius:0 0 14px 14px}
+
+/* add-item row */
+.add{display:flex; gap:8px; padding:11px 15px; background:rgba(255,255,255,.5)}
+.add input{flex:1; min-width:0; font:inherit; font-size:14px; border:0; background:none;
+  color:var(--ink); padding:4px 0; border-bottom:1px dashed var(--rule)}
+.add input:focus{outline:none; border-bottom-color:var(--accent)}
+.add input::placeholder{color:var(--ink-faint)}
+.add button{font:inherit; font-size:13px; font-weight:700; cursor:pointer; border:0;
+  background:none; color:var(--accent); padding:0 4px}
+
+/* ── notes + footer ────────────────────────────────────────────────── */
+.pad{margin-top:30px}
+.pad label{display:block; font-size:12px; font-weight:700; color:var(--muted);
+  letter-spacing:.06em; margin-bottom:8px}
+.pad textarea{
+  width:100%; min-height:96px; font:inherit; font-size:14.5px; line-height:1.6; color:var(--ink);
+  background:var(--card); border:1px solid var(--border); border-radius:14px; padding:14px;
+  resize:vertical;
+}
+.pad textarea:focus{outline:none; border-color:var(--accent)}
+.acts{display:flex; flex-wrap:wrap; gap:9px; margin-top:22px}
+.btn{
+  font:inherit; font-size:14px; font-weight:500; cursor:pointer; padding:11px 18px;
+  border-radius:99px; border:1px solid var(--ink); background:var(--ink); color:var(--paper);
+  transition:transform .15s var(--ease), opacity .15s;
+}
+.btn:active{transform:scale(.97)}
+.btn.ghost{background:transparent; color:var(--ink-soft); border-color:var(--border)}
+.btn.ghost:hover{border-color:var(--rule)}
+footer{margin-top:40px; text-align:center; font-size:12px; color:var(--ink-faint); line-height:1.9}
+footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color:var(--rust)}
+
+/* ── toast + finish stamp ──────────────────────────────────────────── */
+.toast{
+  position:fixed; left:50%; bottom:26px; transform:translate(-50%,26px); z-index:60;
+  background:var(--ink); color:var(--paper); font-size:13.5px; padding:11px 20px;
+  border-radius:99px; box-shadow:var(--shadow); opacity:0; pointer-events:none;
+  transition:opacity .3s var(--ease), transform .3s var(--ease); max-width:90vw; text-align:center;
+}
+.toast.show{opacity:1; transform:translate(-50%,0)}
+.toast button{font:inherit; font-size:13px; font-weight:700; color:var(--accent);
+  background:none; border:0; cursor:pointer; margin-right:12px; padding:0}
+.stamp{
+  position:fixed; inset:0; z-index:70; display:none; place-items:center;
+  background:rgba(245,237,224,.9); backdrop-filter:blur(3px);
+}
+.stamp.show{display:grid; animation:fade .4s var(--ease)}
+.stamp div{
+  border:3px double var(--todo); color:var(--todo); border-radius:14px;
+  padding:22px 36px; text-align:center; transform:rotate(-7deg);
+  animation:thud .5s cubic-bezier(.16,1,.3,1);
+}
+.stamp b{display:block; font-size:31px; font-weight:700; letter-spacing:.04em}
+.stamp span{display:block; font-family:var(--display); font-style:italic; font-size:13px;
+  letter-spacing:.14em; margin-top:6px; opacity:.75}
+@keyframes fade{from{opacity:0}}
+@keyframes thud{0%{transform:rotate(-7deg) scale(2.4); opacity:0}60%{opacity:1}100%{transform:rotate(-7deg) scale(1)}}
+
+@media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important; transition-duration:.01ms!important}}
+@media (min-width:620px){ .wrap{padding:0 26px 120px} .it{padding:14px 18px} }
+
+/* ── print ─────────────────────────────────────────────────────────── */
+@media print{
+  body::before,.bar,.acts,.add,.toast,.stamp,.countdown,.sec-caret{display:none!important}
+  body{background:#fff}
+  .wrap{max-width:none; padding:0}
+  section.closed .list{display:block!important}
+  .list,.plan,.menu{box-shadow:none; break-inside:avoid}
+  .it{break-inside:avoid}
+  a{text-decoration:none; color:inherit}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <p class="eyebrow">Thursday to Saturday</p>
+  <h1>סופ״ש של שנה<span class="yr">ONE YEAR · 2025—2026</span></h1>
+  <div class="dates">
+    <b>13.08</b><span class="dot"></span><b>15.08</b><span class="dot"></span>שני לילות בצימר
+  </div>
+  <p class="countdown" id="cd"></p>
+</header>
+
+<div class="plan">
+  <div class="plan-row">
+    <div class="plan-day">13<span>חמישי</span></div>
+    <div class="plan-txt">יוצאים אחר הצהריים · צ׳ק־אין · <b>פרוסקו ומגש גבינות</b> בחוץ, בלי לבשל כלום</div>
+  </div>
+  <div class="plan-row">
+    <div class="plan-day">14<span>שישי</span></div>
+    <div class="plan-txt">בוקר עצלן · בריכה · <b>הארוחה הגדולה ויין אדום</b> · המצגת של השנה</div>
+  </div>
+  <div class="plan-row is-anniv">
+    <div class="plan-day">15<span>שבת</span></div>
+    <div class="plan-txt">קפה אחרון וצ׳ק־אאוט. <b>בדיוק שנה מהיום שבו התאמנו.</b></div>
+  </div>
+</div>
+
+<div class="bar">
+  <div class="meter">
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="pct" id="pct">0 / 0</div>
+  </div>
+  <div class="chips" id="chips">
+    <button class="chip" data-f="all" aria-pressed="true">הכל</button>
+    <button class="chip" data-f="buy" aria-pressed="false">לקנות</button>
+    <button class="chip" data-f="pack" aria-pressed="false">לארוז</button>
+    <button class="chip" data-f="do" aria-pressed="false">משימות</button>
+    <button class="chip tgl" id="hideDone" aria-pressed="false">להסתיר מסומנים</button>
+    <button class="chip tgl" id="foldAll" aria-pressed="false">לכווץ הכל</button>
+  </div>
+</div>
+
+<main id="app"></main>
+
+<div class="pad">
+  <label for="notes">הערות · מה שנזכרנו ברגע האחרון</label>
+  <textarea id="notes" placeholder="לכתוב כאן…"></textarea>
+</div>
+
+<div class="acts">
+  <button class="btn" id="share">לשלוח את ההתקדמות</button>
+  <button class="btn ghost" id="print">להדפיס</button>
+  <button class="btn ghost" id="reset">לאפס הכל</button>
+</div>
+
+<footer>
+  נשמר לבד על המכשיר הזה. הכפתור למעלה שולח קישור עם כל מה שכבר סומן.<br>
+  <span class="sig">🖤 &nbsp;🤍</span>
+</footer>
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="stamp" id="stamp"><div><b>מוכנים לצאת</b><span>ALL PACKED</span></div></div>
+
+<script>
+/* ══ data ══════════════════════════════════════════════════════════════
+   k: buy | pack | do        o: 0 both · 1 Nadav · 2 Tony
+   Item ids are positional (s{n}i{n}). Reordering invalidates old share
+   links — the decoder length-checks and refuses rather than corrupting. */
+const SECTIONS=[
+{id:'now',t:'לעשות עכשיו',s:'הדברים עם דדליין — לפני חמישי',hot:1,items:[
+ {t:'להתקשר למגזינו ולהזמין קינוח',k:'do',n:'עוגה שלמה (20 או 30 ס״מ) דורשת כשלושה ימי הזמנה מראש — כלומר עכשיו. 03-7570535. אם זה כבר מאוחר מדי, לוקחים פרוסות מהדלפק בלי הזמנה, זה עובד מצוין.',w:1},
+ {t:'לברר עם בעל הצימר מה בדיוק יש במטבח',k:'do',n:'כיריים? תנור? מחבת רצינית? מקרר ומה גודלו? חולץ פקקים? כוסות יין? כל מה שאין — עובר לרשימת האריזה.',w:1},
+ {t:'לשאול אם ארוחת בוקר כלולה',k:'do',n:'משנה לגמרי כמה אוכל צריך לקנות.'},
+ {t:'לעשות את הקניות הגדולות ביום רביעי',k:'do',n:'לא בחמישי. העומס לפני שבת רצחני וחצי מהמדפים כבר ריקים.',w:1},
+ {t:'להעתיק את מצגת השנה למחשב ולבדוק שהיא רצה אופליין',k:'do',n:'להעתיק את כל תיקיית dist (ה־HTML יחד עם assets), לא רק קובץ אחד. לפתוח פעם אחת עם הוויפיי מכובה כדי לוודא. שימו לב שהסרט הפותח לא מתנגן לבד — צריך ללחוץ עליו.',w:1},
+ {t:'להוריד פלייליסט לשמיעה אופליין',k:'do',n:'הקליטה בצימר היא הימור.'},
+ {t:'להוריד מפה אופליין',k:'do'},
+ {t:'תדלוק מלא ובדיקת לחץ אוויר',k:'do'},
+ {t:'להכניס את הפרוסקו למקרר יום לפני',k:'do',n:'בקבוק שיוצא חם מהבית מגיע חם לצימר. המקררים שם קטנים ואיטיים ולא יצילו אתכם בזמן.'},
+]},
+{id:'booze',t:'אלכוהול',s:'הקוניאק מהבית, כל השאר נקנה',items:[
+ {t:'בקבוק הקוניאק',k:'pack',n:'זה שכבר יש בבית. לעטוף בחולצה ולשים בתא הנוסעים — לא בתא המטען הלוהט.',w:1},
+ {t:'יין אדום — 2 בקבוקים',k:'buy',n:'16.08.2025, 12:45 — ״תמיד מעדיפה אדום״. אחד לארוחה, אחד ליתר ביטחון.'},
+ {t:'פרוסקו — 2 בקבוקים',k:'buy',n:'או שמפניה, אם מפוצצים את התקציב. אחד לערב ההגעה, אחד לשבת בבוקר.'},
+ {t:'בירה — 8 בקבוקים',k:'buy',n:'אוגוסט. זה לא הרבה.'},
+ {t:'מים — 6 ליטר לפחות',k:'buy',n:'חום ואלכוהול ביחד. ברצינות.'},
+ {t:'סודה או משקה מוגז',k:'buy'},
+ {t:'קרח — שקית גדולה',k:'buy',n:'לקנות ביום היציאה עצמו, לא לפני.'},
+ {t:'לימונים ונענע',k:'buy',n:'הופך סודה רגילה למשהו.'},
+]},
+{id:'dinner',t:'ארוחת הערב של שישי',s:'הארוחה הגדולה — כל המצרכים',menu:1,items:[
+ {t:'2 סטייקים — אנטריקוט או סינטה',k:'buy',n:'כ־300 גרם כל אחד. לבקש מהקצב חתיכה עבה בעובי 3 ס״מ ולא שתי פרוסות דקות — דק נשרף לפני שהוא מספיק להיות ורוד.'},
+ {t:'בורטה',k:'buy',n:'הפתיחה. אם אין, מוצרלה טרייה.'},
+ {t:'עגבניות שרי',k:'buy'},
+ {t:'2–3 עגבניות טובות',k:'buy'},
+ {t:'2 אפרסקים או נקטרינות',k:'buy',n:'לסלט. בדיוק העונה.'},
+ {t:'בצל סגול',k:'buy'},
+ {t:'בזיליקום טרי',k:'buy'},
+ {t:'רוזמרין טרי',k:'buy'},
+ {t:'ראש שום',k:'buy'},
+ {t:'חמאה',k:'buy',n:'לחמאת השום־רוזמרין שנמסה על הסטייק בסוף.'},
+ {t:'תפוחי אדמה בייבי',k:'buy'},
+ {t:'באגט או פוקצ׳ה',k:'buy'},
+ {t:'לימון',k:'buy'},
+]},
+{id:'morning',t:'בקרים',s:'שתי ארוחות בוקר — שישי ושבת',items:[
+ {t:'ביצים',k:'buy'},
+ {t:'לחם טוב או חלה',k:'buy',n:'חלה לשישי.'},
+ {t:'אבוקדו',k:'buy'},
+ {t:'גבינת שמנת או לבנה',k:'buy'},
+ {t:'קפה טוב, טחון',k:'buy',n:'הקפה שמחכה בצימר הוא תמיד נמס ותמיד עצוב.'},
+ {t:'פינג׳ן, פרנץ׳ פרס או פילטר',k:'pack',n:'אין טעם בקפה טחון בלי משהו להכין בו אותו.'},
+ {t:'חלב',k:'buy'},
+ {t:'ריבה או דבש',k:'buy'},
+ {t:'מלפפונים',k:'buy'},
+ {t:'רסק עגבניות ופלפל אדום',k:'buy',n:'שקשוקה לשבת בבוקר, אם בא לכם.'},
+]},
+{id:'snacks',t:'חטיפים ונשנושים',s:'מגש הגבינות של ליל חמישי, ומה שביניהם',items:[
+ {t:'2–3 גבינות',k:'buy',n:'משהו רך, משהו קשה, ומשהו עם אופי.'},
+ {t:'נקניק יבש או סלמי',k:'buy'},
+ {t:'קרקרים',k:'buy'},
+ {t:'זיתים',k:'buy'},
+ {t:'אגוזים ופיסטוקים',k:'buy'},
+ {t:'שוקולד טוב',k:'buy',n:'לצידנית. אוגוסט הורג שוקולד ברכב תוך עשרים דקות.',w:1},
+ {t:'ענבים',k:'buy'},
+ {t:'אבטיח',k:'buy',n:'חצי חתוך אם אין מקום בצידנית.'},
+ {t:'חומוס וממרחים',k:'buy'},
+ {t:'ביסלי או צ׳יפס',k:'buy'},
+ {t:'תמרים',k:'buy'},
+]},
+{id:'dessert',t:'הקינוח ממגזינו',s:'מנחם בגין 21 / אבא אחימאיר 1, רמת אביב',items:[
+ {t:'לאסוף את הקינוח בדרך',k:'do',n:'שעות הקונדיטוריה: א׳–ה׳ 7:30–19:30 · ו׳ 7:30–16:30 · ש׳ 8:00–19:30. טלפון 03-7570535.'},
+ {t:'לבחור משהו ששורד נסיעה בחום',k:'buy',n:'הפופולריים שם הם פאי לימון־פיסטוק, קראק פאי, עוגת שקדים עם שוקולד לבן ופירות יער, ועוגת גזר. באוגוסט השקדים והגזר ישרדו את הדרך; מוס וקצפת פחות.',w:1},
+ {t:'צידנית לקינוח',k:'pack',n:'לא בתא המטען. על הרצפה מאחורה, איפה שהמזגן מגיע.'},
+]},
+{id:'kit',t:'ציוד מטבח ובר',s:'מה שאין בצימר, ומתגלה בדיוק כשצריך אותו',items:[
+ {t:'חולץ פקקים',k:'pack',n:'הפריט הכי חשוב בכל הרשימה הזאת. לבדוק פעמיים. יין אדום בלי חולץ פקקים זה ערב הרוס.',w:1},
+ {t:'פותחן בקבוקים',k:'pack'},
+ {t:'סכין חדה',k:'pack',n:'לעטוף במגבת. הסכינים בצימר חותכות רק אכזבה.'},
+ {t:'קרש חיתוך קטן',k:'pack'},
+ {t:'שמן זית טוב, בקבוק קטן',k:'pack'},
+ {t:'מלח גס ופלפל שחור',k:'pack'},
+ {t:'2 כוסות יין',k:'pack',n:'לעטוף בבגדים באמצע התיק.'},
+ {t:'צידנית וקרחונים',k:'pack',n:'קרחונים למקפיא כבר מהערב הקודם.'},
+ {t:'נייר אלומיניום',k:'pack'},
+ {t:'שקיות אשפה',k:'pack'},
+ {t:'מגבת מטבח',k:'pack'},
+ {t:'מצית או גפרורים',k:'pack'},
+ {t:'כלים חד־פעמיים לגיבוי',k:'pack'},
+]},
+{id:'cn',t:'בגדים · נדב',s:'שני לילות, אוגוסט',items:[
+ {t:'2 חולצות יום ועוד אחת רזרבית',k:'pack',o:1},
+ {t:'חולצה יפה לערב',k:'pack',o:1},
+ {t:'2 מכנסיים קצרים',k:'pack',o:1},
+ {t:'מכנסיים ארוכים לערב',k:'pack',o:1},
+ {t:'3 תחתונים',k:'pack',o:1},
+ {t:'3 זוגות גרביים',k:'pack',o:1},
+ {t:'בגד ים',k:'pack',o:1},
+ {t:'כפכפים',k:'pack',o:1},
+ {t:'נעליים סגורות',k:'pack',o:1},
+ {t:'בגדי שינה',k:'pack',o:1},
+ {t:'כובע ומשקפי שמש',k:'pack',o:1},
+ {t:'סווטשירט קל',k:'pack',o:1,n:'הלילות בחוץ מתקררים גם באוגוסט.'},
+]},
+{id:'ct',t:'בגדים · טוני',s:'שני לילות, אוגוסט',items:[
+ {t:'משהו יפה לערב הגדול',k:'pack',o:2},
+ {t:'2–3 חולצות יום',k:'pack',o:2},
+ {t:'מכנסיים קצרים או חצאית',k:'pack',o:2},
+ {t:'3 הלבשה תחתונה',k:'pack',o:2},
+ {t:'גרביים',k:'pack',o:2},
+ {t:'בגד ים',k:'pack',o:2},
+ {t:'כפכפים',k:'pack',o:2},
+ {t:'נעליים סגורות',k:'pack',o:2},
+ {t:'בגדי שינה',k:'pack',o:2},
+ {t:'כובע ומשקפי שמש',k:'pack',o:2},
+ {t:'ז׳קט או סווטשירט לערב',k:'pack',o:2},
+ {t:'תיק קטן לערב',k:'pack',o:2},
+]},
+{id:'wash',t:'טואלטיקה',s:'',items:[
+ {t:'2 מברשות שיניים ומשחה',k:'pack'},
+ {t:'חוט דנטלי',k:'pack'},
+ {t:'דאודורנט',k:'pack'},
+ {t:'שמפו ומרכך',k:'pack',n:'לרוב יש בצימר, אבל לרוב גם לא מה שאתם אוהבים.'},
+ {t:'סבון פנים וקרם לחות',k:'pack'},
+ {t:'קרם הגנה SPF 50',k:'pack',n:'אמצע אוגוסט בישראל. זה לא אופציונלי.',w:1},
+ {t:'אפטר סאן או אלוורה',k:'pack'},
+ {t:'דוחה יתושים',k:'pack',n:'צימר בקיץ. בלי זה לא ישנים.',w:1},
+ {t:'מסרק או מברשת',k:'pack'},
+ {t:'ציוד גילוח',k:'pack'},
+ {t:'בושם',k:'pack'},
+ {t:'מגבונים',k:'pack'},
+]},
+{id:'med',t:'תרופות ועזרה ראשונה',s:'הקופסה שלא נפתחת, עד שכן',items:[
+ {t:'תרופות קבועות',k:'pack',n:'הדבר היחיד ברשימה שאי אפשר לקנות בדרך. לבדוק שיש מספיק לשלושה ימים.',w:1},
+ {t:'אקמול או נורופן',k:'pack'},
+ {t:'משהו נגד צרבת',k:'pack',n:'אחרי סטייק, קוניאק ויין. תודו לי אחר כך.'},
+ {t:'אימודיום',k:'pack'},
+ {t:'אנטי־היסטמין',k:'pack',n:'לעקיצות ולאלרגיות.'},
+ {t:'משחה לעקיצות',k:'pack'},
+ {t:'פלסטרים',k:'pack'},
+ {t:'כדור נגד מחלת נסיעה',k:'pack'},
+ {t:'אמצעי מניעה',k:'pack'},
+ {t:'אטמי אוזניים ומסכת שינה',k:'pack',n:'צימרים שקטים עד שהשכנים מגיעים.'},
+]},
+{id:'tech',t:'אלקטרוניקה',s:'',items:[
+ {t:'2 מטענים לטלפונים',k:'pack'},
+ {t:'הכבלים הנכונים',k:'pack',n:'USB-C, לייטנינג, מה שצריך. הכבל שנשכח הוא תמיד הכבל שצריך.'},
+ {t:'מטען נייד',k:'pack'},
+ {t:'מחשב נייד ומטען',k:'pack',n:'למצגת של השנה.',w:1},
+ {t:'מפצל או מאריך חשמל',k:'pack',n:'בצימרים יש שני שקעים וארבעה מכשירים. תמיד.'},
+ {t:'רמקול בלוטות׳ ומטען שלו',k:'pack'},
+ {t:'כבל HDMI או מתאם',k:'pack',n:'אם יש טלוויזיה בצימר, המצגת נראית עליה הרבה יותר טוב.'},
+ {t:'אוזניות',k:'pack'},
+ {t:'מצלמה, סוללה וכרטיס זיכרון',k:'pack'},
+ {t:'מחזיק טלפון לרכב',k:'pack'},
+]},
+{id:'fun',t:'אווירה',s:'הדברים שהופכים את זה למשהו',items:[
+ {t:'המצגת של השנה, מוכנה על המחשב',k:'pack',n:'בדוקה אופליין מראש. הסרט הפותח מחכה ללחיצה — הוא לא יתחיל לבד.',w:1},
+ {t:'נרות',k:'pack',n:'שני נרות הופכים שולחן בצימר לארוחת ערב.'},
+ {t:'חפיסת קלפים או משחק קטן',k:'pack'},
+ {t:'ספר',k:'pack'},
+ {t:'מגבת חוף',k:'pack'},
+ {t:'רמקול עם הפלייליסט',k:'pack'},
+ {t:'מצלמה חד־פעמית',k:'pack',n:'רעיון. שנה שלמה מתועדת בטלפון — נחמד שיישאר משהו על נייר.'},
+]},
+{id:'docs',t:'מסמכים וכסף',s:'',items:[
+ {t:'2 תעודות זהות',k:'pack'},
+ {t:'רישיון נהיגה',k:'pack'},
+ {t:'אישור ההזמנה של הצימר',k:'do',n:'צילום מסך, לא מייל. הקליטה שם לא מובטחת.'},
+ {t:'כתובת וטלפון של בעל הצימר',k:'do',n:'שמורים בטלפון, לא רק במייל.'},
+ {t:'כרטיס אשראי',k:'pack'},
+ {t:'מזומן קטן',k:'pack',n:'דוכני פירות בדרך לא תמיד עובדים עם אשראי.'},
+]},
+{id:'home',t:'לפני שיוצאים מהבית',s:'הסיבוב האחרון בדירה',items:[
+ {t:'לכבות את כל המזגנים',k:'do'},
+ {t:'לכבות את הדוד',k:'do'},
+ {t:'להוציא את הזבל',k:'do',n:'שלושה ימים באוגוסט. אל תשכחו את זה.',w:1},
+ {t:'להשקות צמחים',k:'do'},
+ {t:'לסגור מים וגז',k:'do'},
+ {t:'לנעול חלונות',k:'do'},
+ {t:'לכבות אורות',k:'do'},
+ {t:'לקחת מפתחות',k:'do'},
+]},
+{id:'car',t:'לרכב',s:'',items:[
+ {t:'הצידנית נכנסת אחרונה ויוצאת ראשונה',k:'do'},
+ {t:'מים קרים לדרך',k:'pack'},
+ {t:'מטען לרכב',k:'pack'},
+ {t:'שקית זבל לרכב',k:'pack'},
+ {t:'הפלייליסט מוכן לפני שיוצאים',k:'do',n:'לא בזמן הנהיגה.'},
+]},
+{id:'out',t:'לפני שעוזבים את הצימר',s:'הסיבוב שמונע את הטלפון ״שכחתם משהו״',items:[
+ {t:'מטענים מהשקעים',k:'do',n:'הדבר הכי נשכח בעולם, בכל צימר, בכל שנה.',w:1},
+ {t:'בקבוק הקוניאק',k:'do'},
+ {t:'לרוקן את המקרר',k:'do'},
+ {t:'לבדוק את המקלחת והשירותים',k:'do'},
+ {t:'להסתכל מתחת למיטה',k:'do'},
+ {t:'לתלות מגבות ולאסוף זבל',k:'do'},
+ {t:'תמונה אחרונה של המקום',k:'do'},
+]},
+];
+
+/* ══ state ═════════════════════════════════════════════════════════════ */
+const KEY='tzimmer-2026-08', A='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+const FLAT=[]; SECTIONS.forEach((s,si)=>s.items.forEach((it,ii)=>{it.id='s'+si+'i'+ii; it.si=si; FLAT.push(it)}));
+let st={c:{},o:{},custom:[],notes:'',folded:{}};
+let filter='all', hideDone=false, wasFull=null;
+
+const $=q=>document.querySelector(q), app=$('#app');
+const allItems=()=>FLAT.concat(st.custom);
+
+function load(){ try{ const r=localStorage.getItem(KEY); if(r) st=Object.assign(st,JSON.parse(r)); }catch(e){} }
+function save(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+
+const b64e=s=>{const b=new TextEncoder().encode(s);let x='';b.forEach(c=>x+=String.fromCharCode(c));return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
+const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder().decode(u)};
+
+function encode(){
+  let bits=''; FLAT.forEach(it=>bits+=A[(st.c[it.id]?3:0)+own(it)]);
+  let u=location.origin+location.pathname+'#v1'+bits;
+  const extra={}; if(st.custom.length)extra.k=st.custom; if(st.notes)extra.n=st.notes;
+  if(Object.keys(extra).length) u+='.'+b64e(JSON.stringify(extra));
+  return u;
+}
+function decode(h){
+  if(!h.startsWith('#v1')) return false;
+  const [bits,extra]=h.slice(3).split('.');
+  if(bits.length!==FLAT.length) return false;           // stale link, refuse
+  const c={},o={};
+  for(let i=0;i<bits.length;i++){ const v=A.indexOf(bits[i]); if(v<0) return false;
+    if(v>=3)c[FLAT[i].id]=1; o[FLAT[i].id]=v%3; }
+  st.c=c; st.o=o;
+  if(extra){ try{ const e=JSON.parse(b64d(extra)); st.custom=e.k||[]; st.notes=e.n||''; }catch(err){} }
+  else { st.custom=[]; st.notes=''; }
+  return true;
+}
+
+/* ══ render ════════════════════════════════════════════════════════════ */
+const esc=s=>s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m]));
+const OWN=['','נ','ט'], OWNT=['שניכם','נדב','טוני'];
+/* effective owner: an explicit choice wins, otherwise the section default.
+   Must not be `st.o[id] || it.o` — a deliberate "both" (0) would fall back. */
+const own=it=>(st.o[it.id]!==undefined?st.o[it.id]:(it.o||0));
+
+function itemHTML(it){
+  const on=st.c[it.id]?' on':'', ow=own(it);
+  return '<li class="it'+on+(it.cu?' custom':'')+'" data-id="'+it.id+'" data-k="'+it.k+'">'+
+    '<button class="box" aria-label="סימון" aria-pressed="'+(on?'true':'false')+'"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.2 5.2L20 7"/></svg></button>'+
+    '<div class="body"><div class="lbl">'+esc(it.t)+'</div>'+
+      (it.n?'<p class="note'+(it.w?' warn':'')+'">'+esc(it.n)+'</p>':'')+'</div>'+
+    '<button class="who" data-o="'+ow+'" title="'+OWNT[ow]+'" aria-label="אחראי: '+OWNT[ow]+'">'+(OWN[ow]||'··')+'</button>'+
+    (it.cu?'<button class="del" aria-label="מחיקה">×</button>':'')+
+  '</li>';
+}
+
+function render(){
+  let html='';
+  SECTIONS.forEach((s,si)=>{
+    const mine=FLAT.filter(i=>i.si===si).concat(st.custom.filter(i=>i.si===si));
+    const vis=mine.filter(i=>(filter==='all'||i.k===filter)&&!(hideDone&&st.c[i.id]));
+    const total=mine.filter(i=>filter==='all'||i.k===filter).length;
+    if(!total) return;
+    const done=mine.filter(i=>(filter==='all'||i.k===filter)&&st.c[i.id]).length;
+    const cls=['',s.hot?'hot':'',done===total?'done':'',st.folded[s.id]?'closed':''].join(' ');
+    html+='<section class="'+cls+'" id="sec-'+s.id+'" data-s="'+s.id+'">'+
+      '<div class="sec-head" role="button" tabindex="0">'+
+        '<div class="sec-n">'+String(si).padStart(2,'0')+'</div>'+
+        '<div class="sec-t"><h2>'+s.t+'</h2>'+(s.s?'<p>'+s.s+'</p>':'')+'</div>'+
+        '<div class="sec-count">'+done+'/'+total+'</div><div class="sec-caret">▾</div></div>';
+    if(s.menu) html+=
+      '<div class="menu"><h3>Le Menu</h3><dl>'+
+      '<dt>פתיחה</dt><dd>בורטה, עגבניות שרי, בזיליקום, שמן זית ומלח גס · באגט</dd>'+
+      '<dt>עיקרית</dt><dd>אנטריקוט במחבת עם חמאת שום ורוזמרין</dd>'+
+      '<dt>לצד</dt><dd>תפוחי אדמה בייבי צלויים · סלט עגבניות, אפרסק ובצל סגול</dd>'+
+      '<dt>קינוח</dt><dd>מגזינו</dd><dt>יין</dt><dd>אדום</dd></dl>'+
+      '<p class="alt">אם מתברר שאין מחבת רצינית בצימר — מחליפים לפסטה עם חמאה, שום, עגבניות שרי ובזיליקום, ומוסיפים את הבורטה למעלה. אותם מצרכים כמעט, אפס סיכון.</p></div>';
+    html+='<ul class="list">'+vis.map(itemHTML).join('')+
+      '<li class="add"><input type="text" placeholder="להוסיף פריט…" data-s="'+si+'"><button type="button">הוספה</button></li></ul></section>';
+  });
+  app.innerHTML=html;
+  meter();
+}
+
+function meter(){
+  const items=allItems(), done=items.filter(i=>st.c[i.id]).length;
+  $('#fill').style.transform='scaleX('+(items.length?done/items.length:0)+')';
+  $('#pct').textContent=done+' / '+items.length;
+  // fire the stamp on the transition into "complete", not on every re-render,
+  // and never on first paint — reloading at 100% shouldn't re-stamp.
+  const full=!!(items.length&&done===items.length);
+  if(wasFull===false&&full) $('#stamp').classList.add('show');
+  wasFull=full;
+}
+
+/* ══ events ════════════════════════════════════════════════════════════ */
+app.addEventListener('click',e=>{
+  const head=e.target.closest('.sec-head');
+  if(head){ const id=head.closest('section').dataset.s; st.folded[id]=!st.folded[id]; save(); render(); return; }
+  const li=e.target.closest('.it');
+  if(li){
+    const id=li.dataset.id;
+    if(e.target.closest('.del')){ st.custom=st.custom.filter(c=>c.id!==id); delete st.c[id]; save(); render(); return; }
+    const w=e.target.closest('.who');
+    if(w){ // cycle from what is on screen, and repaint just this pill
+      const v=((+w.dataset.o||0)+1)%3; st.o[id]=v;
+      w.dataset.o=v; w.textContent=OWN[v]||'··'; w.title=OWNT[v];
+      w.setAttribute('aria-label','אחראי: '+OWNT[v]); save(); return; }
+    if(e.target.closest('.box')||e.target.closest('.body')){
+      if(st.c[id]) delete st.c[id]; else st.c[id]=1;
+      save();
+      if(hideDone||filter!=='all') render(); else {
+        li.classList.toggle('on',!!st.c[id]);
+        li.querySelector('.box').setAttribute('aria-pressed',st.c[id]?'true':'false');
+        const sec=li.closest('section'), sid=sec.dataset.s, si=SECTIONS.findIndex(s=>s.id===sid);
+        const mine=FLAT.filter(i=>i.si===si).concat(st.custom.filter(i=>i.si===si));
+        const d=mine.filter(i=>st.c[i.id]).length;
+        sec.querySelector('.sec-count').textContent=d+'/'+mine.length;
+        sec.classList.toggle('done',d===mine.length);
+        meter();
+      }
+    }
+    return;
+  }
+  const btn=e.target.closest('.add button');
+  if(btn){ addItem(btn.previousElementSibling); }
+});
+app.addEventListener('keydown',e=>{
+  if(e.target.matches('.add input')&&e.key==='Enter'){ e.preventDefault(); addItem(e.target); }
+  if(e.target.matches('.sec-head')&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); e.target.click(); }
+});
+function addItem(input){
+  const t=input.value.trim(); if(!t) return;
+  const si=+input.dataset.s;
+  st.custom.push({id:'x'+Date.now().toString(36)+Math.random().toString(36).slice(2,5),t:t,k:SECTIONS[si].items[0].k,si:si,cu:1});
+  input.value=''; save(); render();
+  const secs=app.querySelectorAll('section'); for(const s of secs){ if(s.dataset.s===SECTIONS[si].id){ const i=s.querySelector('.add input'); if(i) i.focus(); } }
+}
+
+$('#chips').addEventListener('click',e=>{
+  const c=e.target.closest('.chip'); if(!c) return;
+  if(c.id==='hideDone'){ hideDone=!hideDone; c.setAttribute('aria-pressed',hideDone); render(); return; }
+  if(c.id==='foldAll'){
+    const any=SECTIONS.some(s=>!st.folded[s.id]);
+    SECTIONS.forEach(s=>st.folded[s.id]=any);
+    c.setAttribute('aria-pressed',any); c.textContent=any?'לפתוח הכל':'לכווץ הכל'; save(); render(); return;
+  }
+  filter=c.dataset.f;
+  $('#chips').querySelectorAll('.chip[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===c));
+  render();
+});
+
+const notes=$('#notes');
+notes.addEventListener('input',()=>{ st.notes=notes.value; save(); });
+
+function toast(msg,undo){
+  const t=$('#toast'); t.innerHTML=esc(msg)+(undo?'<button type="button">ביטול</button>':'');
+  t.classList.add('show');
+  if(undo){ t.querySelector('button').onclick=()=>{ undo(); t.classList.remove('show'); }; }
+  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),undo?9000:2600);
+}
+
+$('#share').addEventListener('click',async()=>{
+  const url=encode();
+  const txt='הרשימה לצימר — ההתקדמות שלי עד עכשיו';
+  try{
+    if(navigator.share){ await navigator.share({title:'סופ״ש של שנה',text:txt,url:url}); return; }
+    await navigator.clipboard.writeText(url); toast('הקישור הועתק — אפשר לשלוח');
+  }catch(e){ if(e&&e.name==='AbortError') return; prompt('להעתיק את הקישור:',url); }
+});
+$('#print').addEventListener('click',()=>window.print());
+$('#reset').addEventListener('click',()=>{
+  if(!confirm('לאפס את כל הסימונים, הפריטים שהוספתם וההערות?')) return;
+  st={c:{},o:{},custom:[],notes:'',folded:{}}; save(); notes.value=''; render();
+});
+$('#stamp').addEventListener('click',()=>$('#stamp').classList.remove('show'));
+
+/* countdown — whole calendar days, so it flips at midnight and not at 15:00 */
+(function(){
+  const n=new Date(), go=new Date(2026,7,13), today=new Date(n.getFullYear(),n.getMonth(),n.getDate());
+  const d=Math.round((go-today)/864e5);
+  $('#cd').innerHTML = d>2 ? 'עוד <b>'+d+'</b> ימים ליציאה'
+    : d===2 ? 'יוצאים <b>מחרתיים</b>'
+    : d===1 ? 'יוצאים <b>מחר</b>'
+    : d===0 ? '<b>היום</b> יוצאים'
+    : d>=-2 ? 'שיהיה מושלם 🖤' : '';
+})();
+
+/* ══ boot ══════════════════════════════════════════════════════════════ */
+load();
+if(location.hash.length>3){
+  const before=JSON.parse(JSON.stringify(st));
+  if(decode(location.hash)){
+    save();
+    history.replaceState(null,'',location.pathname);
+    setTimeout(()=>toast('נטענה ההתקדמות מהקישור',()=>{ st=before; save(); notes.value=st.notes||''; render(); }),400);
+  }
+}
+notes.value=st.notes||'';
+render();
+
+if('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+</script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "סופ״ש של שנה · 13–15.08",
+  "short_name": "צימר",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f5ede0",
+  "theme_color": "#f5ede0",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

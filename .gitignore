@@ -1,3 +1,7 @@
 .claude/
 .DS_Store
 Thumbs.db
+
+# portable single-file build for sharing before the site is live;
+# regenerate rather than commit, so it can't drift from index.html
+checklist-preview.html

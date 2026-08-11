@@ -1,40 +1,46 @@
 # סופ״ש של שנה — רשימה
 
-A packing and shopping checklist for a two-night anniversary trip, 13–15 August 2026.
+A packing and shopping checklist for two nights in Kamun, 13–15 August 2026.
 Hebrew, RTL, mobile-first, and usable with no signal.
 
 **Live:** https://nadav-source.github.io/anniversary-weekend/
 
 ## What it does
 
-- **156 items across 17 sections** — shopping, packing, and timed tasks.
-- **Three filters** — `לקנות` / `לארוז` / `משימות`. In a supermarket, tap *לקנות*
-  and the list collapses to just the 41 things you actually need to buy.
+- **Sections for shopping, packing, and timed tasks**, with a day-by-day plan
+  and a menu card for each meal being cooked.
+- **Three filters** — `לקנות` / `לארוז` / `משימות`. In a supermarket, tap
+  *לקנות* and the list collapses to only what still needs buying.
 - **Hide-checked toggle**, so the list shrinks as you work through it.
 - **Owner pills** — tap the circle at the end of a row to cycle
   both → נדב → טוני. Clothes sections come pre-assigned.
-- **Add your own items** to any section.
-- **Progress is saved on the device**, and the *לשלוח את ההתקדמות* button encodes
-  the whole state — ticks, owners, custom items and notes — into a link. Send it
-  and the other phone picks up exactly where you left off, with an undo.
-- **Works offline.** Fonts are bundled and a service worker caches the shell,
-  because reception at a tzimmer is not a given.
+- **Add, rename, or delete any row**, built-in ones included. Deleting shows an
+  undo; *לאפס הכל* restores everything.
+- **Progress is saved per device**, and *לשלוח את ההתקדמות* encodes the whole
+  state — ticks, owners, renames, deletions, added items and notes — into a
+  link. Send it and the other phone picks up exactly where you left off.
+- **Works offline.** Fonts are bundled and a service worker caches the shell.
 - **Prints** to a clean sheet if you'd rather carry paper.
 
 ## Structure
 
 ```
 index.html              the entire app — markup, styles, logic, data
-fonts/                  Heebo + Playfair Display, subset from the anniversary deck
+fonts/                  Heebo + Playfair Display, subset to what's used
 sw.js                   offline shell: network-first HTML, cache-first assets
 manifest.webmanifest    installable to a phone home screen
 icon.svg
 ```
 
 Edit the `SECTIONS` array near the top of the `<script>` block to change items.
-Item ids are positional, so **reordering sections invalidates previously shared
-links** — the decoder length-checks and refuses a stale link rather than
-applying it to the wrong rows.
 
-Design tokens (palette, type ramp) are inherited from the *year in review*
-anniversary deck so the two pieces look like one project.
+## Two things to know before editing
+
+**Item ids are positional** (`s{n}i{n}`). Reordering or inserting sections
+invalidates previously shared links. The decoder length-checks and refuses a
+stale link rather than applying it to the wrong rows — keep that guard.
+
+**The share format is versioned** (`#v2`). Each built-in row is one base64 char
+packing `deleted(6) + checked(3) + owner(0..2)`; renames, added items and notes
+ride along as JSON after a dot. Changing that packing means bumping the version
+so old links are refused instead of misread.

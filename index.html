@@ -22,7 +22,7 @@
 @font-face{font-family:'Playfair Display';font-style:normal;font-weight:600;font-display:swap;src:url('./fonts/playfair-display-latin-600-normal.woff2') format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
 @font-face{font-family:'Playfair Display';font-style:italic;font-weight:600;font-display:swap;src:url('./fonts/playfair-display-latin-600-italic.woff2') format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
 
-/* ── tokens, inherited from the anniversary deck ───────────────────── */
+/* ── tokens ────────────────────────────────────────────────────────── */
 :root{
   --paper:#f5ede0; --ink:#1a1209; --rust:#8b3a2a; --accent:#c47b2a;
   --muted:#8a7e6b; --card:#faf6ef; --border:#e0d5c4; --rule:#cdbfa8;
@@ -134,7 +134,7 @@ section.hot .sec-n{background:var(--todo); box-shadow:0 0 0 4px rgba(181,67,42,.
   border:1px solid var(--border); border-radius:14px; overflow:hidden}
 
 /* ── item row ──────────────────────────────────────────────────────── */
-.it{display:flex; align-items:flex-start; gap:12px; padding:13px 15px; border-bottom:1px solid var(--border); position:relative}
+.it{display:flex; align-items:flex-start; gap:10px; padding:13px 15px; border-bottom:1px solid var(--border); position:relative}
 .it:last-child{border-bottom:0}
 .box{
   position:relative; flex:none; width:26px; height:26px; margin-top:0; border-radius:8px; cursor:pointer;
@@ -167,8 +167,20 @@ section.hot .sec-n{background:var(--todo); box-shadow:0 0 0 4px rgba(181,67,42,.
 .who[data-o="1"]{background:var(--him); border-color:var(--him); color:#fff}
 .who[data-o="2"]{background:var(--her); border-color:var(--her); color:#fff}
 .it.custom .lbl::after{content:'·'; color:var(--accent); margin-right:6px; font-weight:700}
-.del{flex:none; border:0; background:none; color:var(--ink-faint); cursor:pointer; font-size:16px; padding:0 2px; display:none}
-.it.custom .del{display:block}
+/* edit + delete, available on every row. Muted until touched so the list
+   still reads as a list and not as a control panel. */
+.rowbtn{
+  position:relative; flex:none; border:0; background:none; cursor:pointer; padding:0;
+  width:20px; height:22px; margin-top:2px; font-size:14px; line-height:1;
+  color:var(--ink-faint); transition:color .2s var(--ease);
+}
+.rowbtn::after{content:''; position:absolute; inset:-9px -3px}
+.rowbtn:hover,.rowbtn:focus-visible{color:var(--rust)}
+.edit-in{
+  width:100%; font:inherit; font-size:15.5px; color:var(--ink); background:none;
+  border:0; border-bottom:1px solid var(--accent); padding:1px 0;
+}
+.edit-in:focus{outline:none}
 
 /* menu card inside the dinner section */
 .menu{margin:6px 0 0; padding:16px 18px; background:#fff; border:1px solid var(--border);
@@ -261,7 +273,7 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
   <p class="eyebrow">Thursday to Saturday</p>
   <h1>סופ״ש של שנה<span class="yr">ONE YEAR · 2025—2026</span></h1>
   <div class="dates">
-    <b>13.08</b><span class="dot"></span><b>15.08</b><span class="dot"></span>שני לילות בצימר
+    <b>13.08</b><span class="dot"></span><b>15.08</b><span class="dot"></span>שני לילות בכמון
   </div>
   <p class="countdown" id="cd"></p>
 </header>
@@ -269,15 +281,15 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
 <div class="plan">
   <div class="plan-row">
     <div class="plan-day">13<span>חמישי</span></div>
-    <div class="plan-txt">יוצאים אחר הצהריים · צ׳ק־אין · <b>פרוסקו ומגש גבינות</b> בחוץ, בלי לבשל כלום</div>
+    <div class="plan-txt">יוצאים אחר הצהריים · צ׳ק־אין · פרוסקו על המרפסת · <b>הסטייקים ויין אדום</b></div>
   </div>
   <div class="plan-row">
     <div class="plan-day">14<span>שישי</span></div>
-    <div class="plan-txt">בוקר עצלן · בריכה · <b>הארוחה הגדולה ויין אדום</b> · המצגת של השנה</div>
+    <div class="plan-txt">ארוחת בוקר במקום · בריכה · <b>צהריים טובים בחוץ</b> · בערב פסטה סרדינים קלה</div>
   </div>
   <div class="plan-row is-anniv">
     <div class="plan-day">15<span>שבת</span></div>
-    <div class="plan-txt">קפה אחרון וצ׳ק־אאוט. <b>בדיוק שנה מהיום שבו התאמנו.</b></div>
+    <div class="plan-txt">ארוחת בוקר אחרונה וצ׳ק־אאוט. <b>בדיוק שנה מהיום שבו התאמנו.</b></div>
   </div>
 </div>
 
@@ -325,28 +337,35 @@ footer .sig{font-family:var(--display); font-style:italic; font-size:14px; color
    links — the decoder length-checks and refuses rather than corrupting. */
 const SECTIONS=[
 {id:'now',t:'לעשות עכשיו',s:'הדברים עם דדליין — לפני חמישי',hot:1,items:[
- {t:'להתקשר למגזינו ולהזמין קינוח',k:'do',n:'עוגה שלמה (20 או 30 ס״מ) דורשת כשלושה ימי הזמנה מראש — כלומר עכשיו. 03-7570535. אם זה כבר מאוחר מדי, לוקחים פרוסות מהדלפק בלי הזמנה, זה עובד מצוין.',w:1},
- {t:'לברר עם בעל הצימר מה בדיוק יש במטבח',k:'do',n:'כיריים? תנור? מחבת רצינית? מקרר ומה גודלו? חולץ פקקים? כוסות יין? כל מה שאין — עובר לרשימת האריזה.',w:1},
- {t:'לשאול אם ארוחת בוקר כלולה',k:'do',n:'משנה לגמרי כמה אוכל צריך לקנות.'},
+ {t:'להזמין שולחן לצהריים של שישי',k:'do',n:'שישי בצהריים זה הזמן הכי עמוס בשבוע במסעדות, ובגליל המקומות הטובים מתמלאים מראש.',w:1},
  {t:'לעשות את הקניות הגדולות ביום רביעי',k:'do',n:'לא בחמישי. העומס לפני שבת רצחני וחצי מהמדפים כבר ריקים.',w:1},
- {t:'להעתיק את מצגת השנה למחשב ולבדוק שהיא רצה אופליין',k:'do',n:'להעתיק את כל תיקיית dist (ה־HTML יחד עם assets), לא רק קובץ אחד. לפתוח פעם אחת עם הוויפיי מכובה כדי לוודא. שימו לב שהסרט הפותח לא מתנגן לבד — צריך ללחוץ עליו.',w:1},
- {t:'להוריד פלייליסט לשמיעה אופליין',k:'do',n:'הקליטה בצימר היא הימור.'},
+ {t:'להזמין את הקינוח ממגזינו בוולט',k:'do',n:'שיגיע הביתה לפני שיוצאים, ומשם ישר לצידנית.'},
+ {t:'להקפיא את הקרחונים של הצידנית',k:'do',n:'מהערב הקודם. הנסיעה צפונה ארוכה וגם הקינוח נוסע איתכם.'},
+ {t:'להכניס את הפרוסקו והיין הלבן למקרר יום לפני',k:'do',n:'בקבוק שיוצא חם מהבית מגיע חם לגליל.'},
+ {t:'להוריד פלייליסט לשמיעה אופליין',k:'do',n:'הקליטה בדרך ובכמון היא הימור.'},
  {t:'להוריד מפה אופליין',k:'do'},
  {t:'תדלוק מלא ובדיקת לחץ אוויר',k:'do'},
- {t:'להכניס את הפרוסקו למקרר יום לפני',k:'do',n:'בקבוק שיוצא חם מהבית מגיע חם לצימר. המקררים שם קטנים ואיטיים ולא יצילו אתכם בזמן.'},
 ]},
 {id:'booze',t:'אלכוהול',s:'הקוניאק מהבית, כל השאר נקנה',items:[
  {t:'בקבוק הקוניאק',k:'pack',n:'זה שכבר יש בבית. לעטוף בחולצה ולשים בתא הנוסעים — לא בתא המטען הלוהט.',w:1},
- {t:'יין אדום — 2 בקבוקים',k:'buy',n:'16.08.2025, 12:45 — ״תמיד מעדיפה אדום״. אחד לארוחה, אחד ליתר ביטחון.'},
- {t:'פרוסקו — 2 בקבוקים',k:'buy',n:'או שמפניה, אם מפוצצים את התקציב. אחד לערב ההגעה, אחד לשבת בבוקר.'},
+ {t:'יין אדום — 2 בקבוקים',k:'buy',n:'אחד לארוחה, אחד ליתר ביטחון.'},
+ {t:'שמפניה או פרוסקו — 4 בקבוקים',k:'buy',n:'אחד לערב ההגעה, אחד לבריכה, והשאר לפי מצב הרוח.'},
  {t:'בירה — 8 בקבוקים',k:'buy',n:'אוגוסט. זה לא הרבה.'},
  {t:'מים — 6 ליטר לפחות',k:'buy',n:'חום ואלכוהול ביחד. ברצינות.'},
  {t:'סודה או משקה מוגז',k:'buy'},
  {t:'קרח — שקית גדולה',k:'buy',n:'לקנות ביום היציאה עצמו, לא לפני.'},
  {t:'לימונים ונענע',k:'buy',n:'הופך סודה רגילה למשהו.'},
 ]},
-{id:'dinner',t:'ארוחת הערב של שישי',s:'הארוחה הגדולה — כל המצרכים',menu:1,items:[
- {t:'2 סטייקים — אנטריקוט או סינטה',k:'buy',n:'כ־300 גרם כל אחד. לבקש מהקצב חתיכה עבה בעובי 3 ס״מ ולא שתי פרוסות דקות — דק נשרף לפני שהוא מספיק להיות ורוד.'},
+{id:'dinner',t:'ארוחת הערב של חמישי',s:'הסטייקים — הארוחה הגדולה, בערב שמגיעים',
+ menu:{h:'Jeudi Soir',rows:[
+  ['פתיחה','בורטה, עגבניות שרי, בזיליקום, שמן זית ומלח גס · באגט'],
+  ['עיקרית','אנטריקוט במחבת עם חמאת שום ורוזמרין'],
+  ['לצד','תפוחי אדמה בייבי צלויים · סלט עגבניות, אפרסק ובצל סגול'],
+  ['קינוח','מגזינו'],['יין','אדום']],
+  alt:'מגיעים, פורקים, פותחים בקבוק, וזה על השולחן תוך חצי שעה. המטבח שם מצויד — צריך רק להביא את החומרים.'},
+ items:[
+ {t:'לקנות את הבשר בכרמיאל, לא בתל אביב',k:'do',n:'קצביית הכהן, החרושת 49 כרמיאל, 04-9585841 — בחמישי פתוחים 08:00–21:00, בערך רבע שעה מכמון. שווה להתקשר בבוקר ולבקש שיכינו אנטריקוט עבה: חמישי הוא יום העומס לפני שבת והנתחים הטובים הולכים מוקדם.',w:1},
+ {t:'2 סטייקים — אנטריקוט או סינטה',k:'buy',n:'כ־300 גרם כל אחד, בעובי 3 ס״מ. חתיכה עבה אחת ולא שתי פרוסות דקות — דק נשרף לפני שהוא מספיק להיות ורוד.'},
  {t:'בורטה',k:'buy',n:'הפתיחה. אם אין, מוצרלה טרייה.'},
  {t:'עגבניות שרי',k:'buy'},
  {t:'2–3 עגבניות טובות',k:'buy'},
@@ -360,17 +379,25 @@ const SECTIONS=[
  {t:'באגט או פוקצ׳ה',k:'buy'},
  {t:'לימון',k:'buy'},
 ]},
-{id:'morning',t:'בקרים',s:'שתי ארוחות בוקר — שישי ושבת',items:[
- {t:'ביצים',k:'buy'},
- {t:'לחם טוב או חלה',k:'buy',n:'חלה לשישי.'},
- {t:'אבוקדו',k:'buy'},
- {t:'גבינת שמנת או לבנה',k:'buy'},
- {t:'קפה טוב, טחון',k:'buy',n:'הקפה שמחכה בצימר הוא תמיד נמס ותמיד עצוב.'},
- {t:'פינג׳ן, פרנץ׳ פרס או פילטר',k:'pack',n:'אין טעם בקפה טחון בלי משהו להכין בו אותו.'},
- {t:'חלב',k:'buy'},
- {t:'ריבה או דבש',k:'buy'},
- {t:'מלפפונים',k:'buy'},
- {t:'רסק עגבניות ופלפל אדום',k:'buy',n:'שקשוקה לשבת בבוקר, אם בא לכם.'},
+{id:'lunch',t:'צהריים של שישי',s:'הארוחה הטובה — בחוץ, לא אצלנו',items:[
+ {t:'לבחור מקום ולהזמין',k:'do',n:'בגליל יש הרבה מה לעשות עם ארוחת צהריים של שישי. שווה לבחור מראש ולא לחפש ברגע האחרון.',w:1},
+ {t:'לוודא עד מתי הם פתוחים בשישי',k:'do',n:'הרבה מקומות סוגרים מוקדם לפני שבת.'},
+ {t:'לבדוק כמה נסיעה זה מכמון',k:'do'},
+]},
+{id:'pasta',t:'ארוחת הערב של שישי',s:'פסטה סרדינים — קלה, אחרי צהריים גדולים',
+ menu:{h:'Vendredi Soir',rows:[
+  ['עיקרית','ספגטי סרדינים עם שום, צ׳ילי, לימון ופטרוזיליה'],
+  ['מעל','פירורי לחם קלויים בשמן זית'],
+  ['לצד','מה שנשאר מהגבינות'],
+  ['יין','לבן קר']],
+  alt:'עשרים דקות, סיר אחד ומחבת. בדיוק מה שרוצים אחרי ארוחת צהריים גדולה — ובלי אף אחד שתקוע במטבח.'},
+ items:[
+ {t:'ספגטי או לינגוויני',k:'buy'},
+ {t:'2 קופסאות סרדינים בשמן זית',k:'buy',n:'כאן לא חוסכים — הסרדינים הם כל המנה.',w:1},
+ {t:'פטרוזיליה',k:'buy'},
+ {t:'פתיתי צ׳ילי או צ׳ילי יבש',k:'buy'},
+ {t:'פירורי לחם',k:'buy',n:'או פשוט לגרד את מה שנשאר מהבאגט של אתמול.'},
+ {t:'יין לבן',k:'buy',n:'הולך עם סרדינים הרבה יותר טוב מאדום.'},
 ]},
 {id:'snacks',t:'חטיפים ונשנושים',s:'מגש הגבינות של ליל חמישי, ומה שביניהם',items:[
  {t:'2–3 גבינות',k:'buy',n:'משהו רך, משהו קשה, ומשהו עם אופי.'},
@@ -385,25 +412,15 @@ const SECTIONS=[
  {t:'ביסלי או צ׳יפס',k:'buy'},
  {t:'תמרים',k:'buy'},
 ]},
-{id:'dessert',t:'הקינוח ממגזינו',s:'מנחם בגין 21 / אבא אחימאיר 1, רמת אביב',items:[
- {t:'לאסוף את הקינוח בדרך',k:'do',n:'שעות הקונדיטוריה: א׳–ה׳ 7:30–19:30 · ו׳ 7:30–16:30 · ש׳ 8:00–19:30. טלפון 03-7570535.'},
- {t:'לבחור משהו ששורד נסיעה בחום',k:'buy',n:'הפופולריים שם הם פאי לימון־פיסטוק, קראק פאי, עוגת שקדים עם שוקולד לבן ופירות יער, ועוגת גזר. באוגוסט השקדים והגזר ישרדו את הדרך; מוס וקצפת פחות.',w:1},
- {t:'צידנית לקינוח',k:'pack',n:'לא בתא המטען. על הרצפה מאחורה, איפה שהמזגן מגיע.'},
+{id:'dessert',t:'הקינוח ממגזינו',s:'מגיע הביתה בוולט לפני שיוצאים',items:[
+ {t:'להזמין בוולט ביום היציאה',k:'do',n:'אין צורך בהזמנה מראש — פשוט מזמינים מהתפריט של הקונדיטוריה.'},
+ {t:'לבחור משהו ששורד את הדרך',k:'buy',n:'הפופולריים שם הם פאי לימון־פיסטוק, קראק פאי, עוגת שקדים עם שוקולד לבן ופירות יער, ועוגת גזר. באוגוסט, בנסיעה צפונה — השקדים והגזר ישרדו; מוס וקצפת פחות.',w:1},
+ {t:'ישר לצידנית',k:'do',n:'לא בתא המטען. על הרצפה מאחורה, איפה שהמזגן מגיע.'},
 ]},
-{id:'kit',t:'ציוד מטבח ובר',s:'מה שאין בצימר, ומתגלה בדיוק כשצריך אותו',items:[
- {t:'חולץ פקקים',k:'pack',n:'הפריט הכי חשוב בכל הרשימה הזאת. לבדוק פעמיים. יין אדום בלי חולץ פקקים זה ערב הרוס.',w:1},
- {t:'פותחן בקבוקים',k:'pack'},
- {t:'סכין חדה',k:'pack',n:'לעטוף במגבת. הסכינים בצימר חותכות רק אכזבה.'},
- {t:'קרש חיתוך קטן',k:'pack'},
- {t:'שמן זית טוב, בקבוק קטן',k:'pack'},
+{id:'kit',t:'מהמטבח שלנו',s:'המטבח בכמון מצויד — רק מה ששווה להביא משלנו',items:[
+ {t:'שמן זית טוב, בקבוק קטן',k:'pack',n:'כל ההבדל בין הסלט הזה לסלט של מסעדה.'},
  {t:'מלח גס ופלפל שחור',k:'pack'},
- {t:'2 כוסות יין',k:'pack',n:'לעטוף בבגדים באמצע התיק.'},
- {t:'צידנית וקרחונים',k:'pack',n:'קרחונים למקפיא כבר מהערב הקודם.'},
- {t:'נייר אלומיניום',k:'pack'},
- {t:'שקיות אשפה',k:'pack'},
- {t:'מגבת מטבח',k:'pack'},
- {t:'מצית או גפרורים',k:'pack'},
- {t:'כלים חד־פעמיים לגיבוי',k:'pack'},
+ {t:'צידנית וקרחונים',k:'pack'},
 ]},
 {id:'cn',t:'בגדים · נדב',s:'שני לילות, אוגוסט',items:[
  {t:'2 חולצות יום ועוד אחת רזרבית',k:'pack',o:1},
@@ -463,17 +480,16 @@ const SECTIONS=[
  {t:'2 מטענים לטלפונים',k:'pack'},
  {t:'הכבלים הנכונים',k:'pack',n:'USB-C, לייטנינג, מה שצריך. הכבל שנשכח הוא תמיד הכבל שצריך.'},
  {t:'מטען נייד',k:'pack'},
- {t:'מחשב נייד ומטען',k:'pack',n:'למצגת של השנה.',w:1},
+ {t:'מחשב נייד ומטען',k:'pack'},
  {t:'מפצל או מאריך חשמל',k:'pack',n:'בצימרים יש שני שקעים וארבעה מכשירים. תמיד.'},
  {t:'רמקול בלוטות׳ ומטען שלו',k:'pack'},
- {t:'כבל HDMI או מתאם',k:'pack',n:'אם יש טלוויזיה בצימר, המצגת נראית עליה הרבה יותר טוב.'},
+ {t:'כבל HDMI או מתאם',k:'pack',n:'אם בא לכם להעלות משהו על הטלוויזיה.'},
  {t:'אוזניות',k:'pack'},
  {t:'מצלמה, סוללה וכרטיס זיכרון',k:'pack'},
  {t:'מחזיק טלפון לרכב',k:'pack'},
 ]},
 {id:'fun',t:'אווירה',s:'הדברים שהופכים את זה למשהו',items:[
- {t:'המצגת של השנה, מוכנה על המחשב',k:'pack',n:'בדוקה אופליין מראש. הסרט הפותח מחכה ללחיצה — הוא לא יתחיל לבד.',w:1},
- {t:'נרות',k:'pack',n:'שני נרות הופכים שולחן בצימר לארוחת ערב.'},
+ {t:'נרות',k:'pack',n:'שני נרות הופכים שולחן רגיל לארוחת ערב.'},
  {t:'חפיסת קלפים או משחק קטן',k:'pack'},
  {t:'ספר',k:'pack'},
  {t:'מגבת חוף',k:'pack'},
@@ -481,7 +497,6 @@ const SECTIONS=[
  {t:'מצלמה חד־פעמית',k:'pack',n:'רעיון. שנה שלמה מתועדת בטלפון — נחמד שיישאר משהו על נייר.'},
 ]},
 {id:'docs',t:'מסמכים וכסף',s:'',items:[
- {t:'2 תעודות זהות',k:'pack'},
  {t:'רישיון נהיגה',k:'pack'},
  {t:'אישור ההזמנה של הצימר',k:'do',n:'צילום מסך, לא מייל. הקליטה שם לא מובטחת.'},
  {t:'כתובת וטלפון של בעל הצימר',k:'do',n:'שמורים בטלפון, לא רק במייל.'},
@@ -519,11 +534,13 @@ const SECTIONS=[
 /* ══ state ═════════════════════════════════════════════════════════════ */
 const KEY='tzimmer-2026-08', A='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
 const FLAT=[]; SECTIONS.forEach((s,si)=>s.items.forEach((it,ii)=>{it.id='s'+si+'i'+ii; it.si=si; FLAT.push(it)}));
-let st={c:{},o:{},custom:[],notes:'',folded:{}};
+let st={c:{},o:{},del:{},edit:{},custom:[],notes:'',folded:{}};
 let filter='all', hideDone=false, wasFull=null;
 
 const $=q=>document.querySelector(q), app=$('#app');
-const allItems=()=>FLAT.concat(st.custom);
+const live=()=>FLAT.concat(st.custom).filter(i=>!st.del[i.id]);
+const allItems=live;
+const secItems=si=>live().filter(i=>i.si===si);
 
 function load(){ try{ const r=localStorage.getItem(KEY); if(r) st=Object.assign(st,JSON.parse(r)); }catch(e){} }
 function save(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
@@ -531,23 +548,37 @@ function save(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} 
 const b64e=s=>{const b=new TextEncoder().encode(s);let x='';b.forEach(c=>x+=String.fromCharCode(c));return btoa(x).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')};
 const b64d=s=>{s=s.replace(/-/g,'+').replace(/_/g,'/');const b=atob(s),u=new Uint8Array(b.length);for(let i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return new TextDecoder().decode(u)};
 
+/* One base64 char per built-in item packs three flags:
+   deleted(6) + checked(3) + owner(0..2)  ->  0..11.
+   Renamed text and added items don't fit in that, so they ride along as
+   JSON in the fragment after a dot. */
 function encode(){
-  let bits=''; FLAT.forEach(it=>bits+=A[(st.c[it.id]?3:0)+own(it)]);
-  let u=location.origin+location.pathname+'#v1'+bits;
-  const extra={}; if(st.custom.length)extra.k=st.custom; if(st.notes)extra.n=st.notes;
+  let bits=''; FLAT.forEach(it=>bits+=A[(st.del[it.id]?6:0)+(st.c[it.id]?3:0)+own(it)]);
+  let u=location.origin+location.pathname+'#v2'+bits;
+  const extra={};
+  if(st.custom.length)extra.k=st.custom;
+  if(st.notes)extra.n=st.notes;
+  if(Object.keys(st.edit).length)extra.e=st.edit;
+  if(Object.keys(st.del).some(k=>k[0]==='x'))extra.d=Object.keys(st.del).filter(k=>k[0]==='x');
   if(Object.keys(extra).length) u+='.'+b64e(JSON.stringify(extra));
   return u;
 }
 function decode(h){
-  if(!h.startsWith('#v1')) return false;
+  if(!h.startsWith('#v2')) return false;
   const [bits,extra]=h.slice(3).split('.');
   if(bits.length!==FLAT.length) return false;           // stale link, refuse
-  const c={},o={};
-  for(let i=0;i<bits.length;i++){ const v=A.indexOf(bits[i]); if(v<0) return false;
-    if(v>=3)c[FLAT[i].id]=1; o[FLAT[i].id]=v%3; }
-  st.c=c; st.o=o;
-  if(extra){ try{ const e=JSON.parse(b64d(extra)); st.custom=e.k||[]; st.notes=e.n||''; }catch(err){} }
-  else { st.custom=[]; st.notes=''; }
+  const c={},o={},d={};
+  for(let i=0;i<bits.length;i++){ let v=A.indexOf(bits[i]); if(v<0||v>11) return false;
+    const id=FLAT[i].id;
+    if(v>=6){ d[id]=1; v-=6; }
+    if(v>=3){ c[id]=1; v-=3; }
+    if(v!==(FLAT[i].o||0)) o[id]=v; }   // store deviations only — see own()
+  st.c=c; st.o=o; st.del=d;
+  if(extra){ try{ const e=JSON.parse(b64d(extra));
+    st.custom=e.k||[]; st.notes=e.n||''; st.edit=e.e||{};
+    (e.d||[]).forEach(id=>st.del[id]=1);
+  }catch(err){} }
+  else { st.custom=[]; st.notes=''; st.edit={}; }
   return true;
 }
 
@@ -556,23 +587,50 @@ const esc=s=>s.replace(/[&<>"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&qu
 const OWN=['','נ','ט'], OWNT=['שניכם','נדב','טוני'];
 /* effective owner: an explicit choice wins, otherwise the section default.
    Must not be `st.o[id] || it.o` — a deliberate "both" (0) would fall back. */
+/* st.o holds only owners that deviate from the row's default, so that the
+   stored state and a decoded share link are the same shape. own() resolves. */
 const own=it=>(st.o[it.id]!==undefined?st.o[it.id]:(it.o||0));
+const defOwn=id=>{const it=FLAT.concat(st.custom).find(i=>i.id===id); return it&&it.o||0;};
+const label=it=>(st.edit[it.id]!==undefined?st.edit[it.id]:it.t);
 
 function itemHTML(it){
   const on=st.c[it.id]?' on':'', ow=own(it);
   return '<li class="it'+on+(it.cu?' custom':'')+'" data-id="'+it.id+'" data-k="'+it.k+'">'+
     '<button class="box" aria-label="סימון" aria-pressed="'+(on?'true':'false')+'"><svg viewBox="0 0 24 24"><path d="M4 12.5l5.2 5.2L20 7"/></svg></button>'+
-    '<div class="body"><div class="lbl">'+esc(it.t)+'</div>'+
+    '<div class="body"><div class="lbl">'+esc(label(it))+'</div>'+
       (it.n?'<p class="note'+(it.w?' warn':'')+'">'+esc(it.n)+'</p>':'')+'</div>'+
     '<button class="who" data-o="'+ow+'" title="'+OWNT[ow]+'" aria-label="אחראי: '+OWNT[ow]+'">'+(OWN[ow]||'··')+'</button>'+
-    (it.cu?'<button class="del" aria-label="מחיקה">×</button>':'')+
+    '<button class="rowbtn edit" aria-label="עריכת הפריט">✎</button>'+
+    '<button class="rowbtn del" aria-label="מחיקת הפריט">×</button>'+
   '</li>';
+}
+
+function startEdit(li,id){
+  const item=FLAT.concat(st.custom).find(i=>i.id===id); if(!item) return;
+  const lbl=li.querySelector('.lbl'); if(lbl.querySelector('input')) return;
+  lbl.textContent='';
+  const inp=document.createElement('input');
+  inp.className='edit-in'; inp.type='text'; inp.value=label(item);
+  lbl.appendChild(inp); inp.focus(); inp.select();
+  let closed=false;
+  const finish=commit=>{
+    if(closed) return; closed=true;
+    if(commit){ const v=inp.value.trim();
+      if(v){ if(v!==item.t) st.edit[id]=v; else delete st.edit[id]; save(); } }
+    render();
+  };
+  inp.addEventListener('keydown',ev=>{
+    ev.stopPropagation();
+    if(ev.key==='Enter'){ ev.preventDefault(); finish(true); }
+    else if(ev.key==='Escape'){ ev.preventDefault(); finish(false); }
+  });
+  inp.addEventListener('blur',()=>finish(true));
 }
 
 function render(){
   let html='';
   SECTIONS.forEach((s,si)=>{
-    const mine=FLAT.filter(i=>i.si===si).concat(st.custom.filter(i=>i.si===si));
+    const mine=secItems(si);
     const vis=mine.filter(i=>(filter==='all'||i.k===filter)&&!(hideDone&&st.c[i.id]));
     const total=mine.filter(i=>filter==='all'||i.k===filter).length;
     if(!total) return;
@@ -583,13 +641,9 @@ function render(){
         '<div class="sec-n">'+String(si).padStart(2,'0')+'</div>'+
         '<div class="sec-t"><h2>'+s.t+'</h2>'+(s.s?'<p>'+s.s+'</p>':'')+'</div>'+
         '<div class="sec-count">'+done+'/'+total+'</div><div class="sec-caret">▾</div></div>';
-    if(s.menu) html+=
-      '<div class="menu"><h3>Le Menu</h3><dl>'+
-      '<dt>פתיחה</dt><dd>בורטה, עגבניות שרי, בזיליקום, שמן זית ומלח גס · באגט</dd>'+
-      '<dt>עיקרית</dt><dd>אנטריקוט במחבת עם חמאת שום ורוזמרין</dd>'+
-      '<dt>לצד</dt><dd>תפוחי אדמה בייבי צלויים · סלט עגבניות, אפרסק ובצל סגול</dd>'+
-      '<dt>קינוח</dt><dd>מגזינו</dd><dt>יין</dt><dd>אדום</dd></dl>'+
-      '<p class="alt">אם מתברר שאין מחבת רצינית בצימר — מחליפים לפסטה עם חמאה, שום, עגבניות שרי ובזיליקום, ומוסיפים את הבורטה למעלה. אותם מצרכים כמעט, אפס סיכון.</p></div>';
+    if(s.menu) html+='<div class="menu"><h3>'+s.menu.h+'</h3><dl>'+
+      s.menu.rows.map(r=>'<dt>'+r[0]+'</dt><dd>'+r[1]+'</dd>').join('')+'</dl>'+
+      (s.menu.alt?'<p class="alt">'+s.menu.alt+'</p>':'')+'</div>';
     html+='<ul class="list">'+vis.map(itemHTML).join('')+
       '<li class="add"><input type="text" placeholder="להוסיף פריט…" data-s="'+si+'"><button type="button">הוספה</button></li></ul></section>';
   });
@@ -610,15 +664,21 @@ function meter(){
 
 /* ══ events ════════════════════════════════════════════════════════════ */
 app.addEventListener('click',e=>{
+  if(e.target.classList.contains('edit-in')) return;   // typing, not toggling
   const head=e.target.closest('.sec-head');
   if(head){ const id=head.closest('section').dataset.s; st.folded[id]=!st.folded[id]; save(); render(); return; }
   const li=e.target.closest('.it');
   if(li){
     const id=li.dataset.id;
-    if(e.target.closest('.del')){ st.custom=st.custom.filter(c=>c.id!==id); delete st.c[id]; save(); render(); return; }
+    if(e.target.closest('.edit')){ startEdit(li,id); return; }
+    if(e.target.closest('.del')){
+      st.del[id]=1; save(); render();
+      toast('הפריט נמחק',()=>{ delete st.del[id]; save(); render(); });
+      return; }
     const w=e.target.closest('.who');
     if(w){ // cycle from what is on screen, and repaint just this pill
-      const v=((+w.dataset.o||0)+1)%3; st.o[id]=v;
+      const v=((+w.dataset.o||0)+1)%3;
+      if(v===defOwn(id)) delete st.o[id]; else st.o[id]=v;
       w.dataset.o=v; w.textContent=OWN[v]||'··'; w.title=OWNT[v];
       w.setAttribute('aria-label','אחראי: '+OWNT[v]); save(); return; }
     if(e.target.closest('.box')||e.target.closest('.body')){
@@ -628,7 +688,7 @@ app.addEventListener('click',e=>{
         li.classList.toggle('on',!!st.c[id]);
         li.querySelector('.box').setAttribute('aria-pressed',st.c[id]?'true':'false');
         const sec=li.closest('section'), sid=sec.dataset.s, si=SECTIONS.findIndex(s=>s.id===sid);
-        const mine=FLAT.filter(i=>i.si===si).concat(st.custom.filter(i=>i.si===si));
+        const mine=secItems(si);
         const d=mine.filter(i=>st.c[i.id]).length;
         sec.querySelector('.sec-count').textContent=d+'/'+mine.length;
         sec.classList.toggle('done',d===mine.length);
@@ -685,8 +745,8 @@ $('#share').addEventListener('click',async()=>{
 });
 $('#print').addEventListener('click',()=>window.print());
 $('#reset').addEventListener('click',()=>{
-  if(!confirm('לאפס את כל הסימונים, הפריטים שהוספתם וההערות?')) return;
-  st={c:{},o:{},custom:[],notes:'',folded:{}}; save(); notes.value=''; render();
+  if(!confirm('לאפס הכל? זה מחזיר גם פריטים שמחקתם ושמות ששיניתם.')) return;
+  st={c:{},o:{},del:{},edit:{},custom:[],notes:'',folded:{}}; save(); notes.value=''; render();
 });
 $('#stamp').addEventListener('click',()=>$('#stamp').classList.remove('show'));
 

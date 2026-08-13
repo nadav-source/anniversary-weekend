@@ -592,10 +592,15 @@ function save(){
 }
 
 /* ══ shared state ══════════════════════════════════════════════════════
-   One anonymous JSON blob, no account and no key. Anyone who reads this
-   page's source can therefore also overwrite the list — that is the deal
-   we took for zero setup. "עותק גיבוי" produces a restore link. */
-const BLOB='https://jsonblob.com/api/jsonBlob/019ff0fe-9882-7ccc-a615-323981968429';
+   Anonymous store, no account and no key — so anyone who reads this page's
+   source can also overwrite the list. That is the deal for zero setup, and
+   "עותק גיבוי" is the escape hatch.
+
+   The key is OURS and fixed. The previous host issued the id itself and then
+   deleted the record two days later; every write 404'd against an id no one
+   could recreate. Here a purge just reads back empty and the next write
+   restores it at the same address. Never move to a store that assigns the id. */
+const STORE='https://textdb.dev/api/data/nt-kamun-8f3a1c5d92e7b046';
 let applying=false, syncing=false, pushTimer=null, warnedOffline=false;
 /* dirty = this device holds writes the blob has not accepted yet. It stays
    set through a failed push so the next poll retries instead of dropping it. */
@@ -651,6 +656,24 @@ function guard(j,what){
   return j;
 }
 
+/* A missing, empty or unparseable record is "nothing shared yet", not a
+   failure — otherwise a purge upstream permanently blocks every write. */
+async function readRemote(){
+  const res=await fetch(STORE,{cache:'no-store'});
+  if(res.status===404) return {};
+  if(!res.ok) throw new Error('GET '+res.status);
+  const txt=(await res.text()||'').trim();
+  if(!txt) return {};
+  let j; try{ j=JSON.parse(txt); }catch(e){ return {}; }
+  return guard(j,'GET');
+}
+async function writeRemote(doc){
+  const res=await fetch(STORE,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(doc)});
+  if(!res.ok) throw new Error('POST '+res.status);
+  const txt=(await res.text()||'').trim();
+  if(txt){ try{ guard(JSON.parse(txt),'POST'); }catch(e){ if(e.rate) throw e; } }
+}
+
 async function sync(force){
   if(syncing) return;
   if(Date.now()<backoffUntil){                 // defer, never drop
@@ -660,17 +683,13 @@ async function sync(force){
   }
   syncing=true; setLamp('busy','מסנכרן');
   try{
-    const res=await fetch(BLOB,{cache:'no-store'});
-    if(!res.ok) throw new Error('GET '+res.status);
-    const remote=guard(await res.json(),'GET');
+    const remote=await readRemote();
     const changed=mergeDoc(remote);
     if(changed){
       applying=true; save(); notes.value=st.notes||''; render(); applying=false;
     }
-    if(force||changed||dirty||remote.seeded===false){
-      const put=await fetch(BLOB,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(toDoc())});
-      if(!put.ok) throw new Error('PUT '+put.status);
-      guard(await put.json().catch(()=>null),'PUT');
+    if(force||changed||dirty||!remote.items){  // !items -> restore the record
+      await writeRemote(toDoc());
       dirty=false;                             // only after a confirmed write
     }
     setLamp('ok','מסונכרן'); warnedOffline=false; backoffUntil=0;

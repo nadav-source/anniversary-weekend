@@ -28,10 +28,19 @@ Hebrew, RTL, mobile-first, and usable with no signal.
 
 ## How syncing works, and what it costs
 
-State lives in one anonymous blob on jsonblob.com — no account, no API key.
+State lives in one anonymous record on textdb.dev — no account, no API key.
 The trade is that **anyone who reads this page's source can also read or
 overwrite the list.** Acceptable for a packing list, not for anything else.
 If it ever gets clobbered, *עותק גיבוי* restores from a link.
+
+**The key is ours and fixed, and that is not incidental.** This first ran on
+jsonblob, which issues the id itself; it deleted the record two days later and
+every write then 404'd against an id no client could recreate — the list simply
+stopped syncing while each device quietly held its own edits. With a key we
+choose, a purge reads back empty and the next write restores it at the same
+address. `readRemote()` therefore treats 404, empty and unparseable responses
+as "nothing shared yet" rather than as errors. Do not move to a store that
+assigns the id.
 
 Merging is **per row, newest write wins** — not per document — so two phones
 editing different rows never clobber each other. Every row carries a timestamp
